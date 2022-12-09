@@ -13,25 +13,43 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Movie {
 
+    /**
+     * Id
+     */
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id", columnDefinition = "UUID")
     private UUID id;
 
+    /**
+     * Title
+     */
     @Column(name = "title", nullable = false)
     private String title;
 
+    /**
+     * Release year
+     */
     @Column(name = "year", nullable = false)
     private int year;
 
+    /**
+     * Genre
+     */
     @Column(name = "genre", nullable = false)
     @Enumerated(EnumType.STRING)
     private MovieGenre genre;
 
+    /**
+     * Duration in minutes
+     */
     @Column(name = "duration", nullable = false)
-    private int duration; //in minutes
+    private int duration;
 
+    /**
+     * Director's first and last name
+     */
     @Column(name = "director", nullable = false)
     private String director;
 
