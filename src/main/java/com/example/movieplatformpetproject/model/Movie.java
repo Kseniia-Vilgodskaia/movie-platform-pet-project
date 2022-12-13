@@ -1,6 +1,8 @@
 package com.example.movieplatformpetproject.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "movie")
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Movie {
 
@@ -32,7 +36,7 @@ public class Movie {
      * Release year
      */
     @Column(name = "year", nullable = false)
-    private int year;
+    private Integer year;
 
     /**
      * Genre
@@ -45,19 +49,11 @@ public class Movie {
      * Duration in minutes
      */
     @Column(name = "duration", nullable = false)
-    private int duration;
+    private Integer duration;
 
     /**
      * Director's first and last name
      */
     @Column(name = "director", nullable = false)
     private String director;
-
-    public Movie(String title, int year, MovieGenre genre, int duration, String director) {
-        this.title = title;
-        this.year = year;
-        this.genre = genre;
-        this.duration = duration;
-        this.director = director;
-    }
 }
