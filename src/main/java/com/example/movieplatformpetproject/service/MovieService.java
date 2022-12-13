@@ -33,10 +33,19 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
+    /**
+     * Find all movies from DB
+     * @return - List of movies (MovieOutputDto)
+     */
     public List<Movie> findAll() {
         return movieRepository.findAll();
     }
 
+    /**
+     * Find a movie by its ID
+     * @param id - ID of the movie
+     * @return - MovieOutputDto of the found movie
+     */
     public Movie findById(UUID id) {
         Optional<Movie> movie = movieRepository.findById(id);
         if (movie.isEmpty()) {
