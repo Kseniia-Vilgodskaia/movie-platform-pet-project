@@ -6,10 +6,9 @@ import com.example.movieplatformpetproject.api.dto.MovieOutputDtoConverter;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
@@ -24,5 +23,13 @@ public class MovieRestController {
     public MovieOutputDto create(@RequestBody MovieInputDto movieInputDto) {
         Movie movie = movieService.create(movieInputDto);
         return movieOutputDtoConverter.convert(movie);
+    }
+
+    @GetMapping
+    public List<MovieOutputDto> findAll() {
+        List<Movie> movies = movieService.findAll();
+        return movies.stream()
+                .map(movieOutputDtoConverter::convert)
+                .toList();
     }
 }

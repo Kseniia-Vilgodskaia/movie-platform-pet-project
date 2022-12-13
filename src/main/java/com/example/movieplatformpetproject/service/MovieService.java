@@ -6,6 +6,8 @@ import com.example.movieplatformpetproject.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MovieService {
@@ -26,5 +28,9 @@ public class MovieService {
                 .director(movieInputDto.getDirector())
                 .build();
         return movieRepository.save(movie);
+    }
+
+    public List<Movie> findAll() {
+        return movieRepository.findAll();
     }
 }
