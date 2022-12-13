@@ -1,4 +1,4 @@
-package com.example.movieplatformpetproject.dto;
+package com.example.movieplatformpetproject.api.dto;
 
 import com.example.movieplatformpetproject.model.MovieGenre;
 import lombok.Getter;
@@ -14,7 +14,7 @@ public class MovieInputDto {
     /**
      * Release year
      */
-    private int year;
+    private Integer year;
 
     /**
      * Genre
@@ -24,7 +24,7 @@ public class MovieInputDto {
     /**
      * Duration in minutes
      */
-    private int duration;
+    private Integer duration;
 
     /**
      * Director's first and last name

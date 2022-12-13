@@ -1,12 +1,14 @@
-package com.example.movieplatformpetproject.dto;
+package com.example.movieplatformpetproject.api.dto;
 
 import com.example.movieplatformpetproject.model.MovieGenre;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class MovieOutputDto {
 
@@ -23,7 +25,7 @@ public class MovieOutputDto {
     /**
      * Release year
      */
-    private int year;
+    private Integer year;
 
     /**
      * Genre
@@ -33,7 +35,7 @@ public class MovieOutputDto {
     /**
      * Duration in minutes
      */
-    private int duration;
+    private Integer duration;
 
     /**
      * Director's first and last name
