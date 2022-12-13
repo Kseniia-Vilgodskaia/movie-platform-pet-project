@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +18,7 @@ public class MovieService {
 
     /**
      * Create a new movie
+     *
      * @param movieInputDto - MovieInputDto of the movie
      * @return - MovieOutputDto of created movie
      */
@@ -32,5 +35,13 @@ public class MovieService {
 
     public List<Movie> findAll() {
         return movieRepository.findAll();
+    }
+
+    public Movie findById(UUID id) {
+        Optional<Movie> movie = movieRepository.findById(id);
+        if (movie.isEmpty()) {
+            throw new RuntimeException("Movie not found by ID: " + id);
+        }
+        return movie.get();
     }
 }
