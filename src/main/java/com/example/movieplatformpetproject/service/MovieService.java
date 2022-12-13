@@ -53,4 +53,25 @@ public class MovieService {
         }
         return movie.get();
     }
+
+    /**
+     * Update an existing movie
+     * @param id - ID of the movie
+     * @param movieInputDto - MovieInputDto of the movie
+     * @return - MovieOutputDto of updated movie
+     */
+    public Movie update(UUID id, MovieInputDto movieInputDto) {
+        if (movieRepository.findById(id).isEmpty()) {
+            throw new RuntimeException("Movie not found by ID: " + id);
+        }
+        Movie movie = Movie.builder()
+                .id(id)
+                .title(movieInputDto.getTitle())
+                .year(movieInputDto.getYear())
+                .genre(movieInputDto.getGenre())
+                .duration(movieInputDto.getDuration())
+                .director(movieInputDto.getDirector())
+                .build();
+        return movieRepository.save(movie);
+    }
 }
