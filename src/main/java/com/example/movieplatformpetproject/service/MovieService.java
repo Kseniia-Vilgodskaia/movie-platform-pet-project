@@ -25,7 +25,6 @@ public class MovieService {
                 .duration(movieInputDto.getDuration())
                 .director(movieInputDto.getDirector())
                 .build();
-        movieRepository.save(movie);
-        return movie;
+        return movieRepository.save(movie);
     }
 }
