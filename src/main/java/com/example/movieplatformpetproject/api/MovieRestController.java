@@ -45,4 +45,9 @@ public class MovieRestController {
         Movie movie = movieService.update(id, movieInputDto);
         return movieOutputDtoConverter.convert(movie);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id) {
+        movieService.delete(id);
+    }
 }

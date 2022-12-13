@@ -74,4 +74,13 @@ public class MovieService {
                 .build();
         return movieRepository.save(movie);
     }
+
+
+    /**
+     * Delete an existing movie
+     * @param id - ID of the movie
+     */
+    public void delete(UUID id) {
+        movieRepository.deleteById(id);
+    }
 }
