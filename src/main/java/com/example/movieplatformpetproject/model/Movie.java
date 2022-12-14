@@ -12,7 +12,6 @@ import java.util.UUID;
 @Accessors(chain = true)
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Movie {
 
