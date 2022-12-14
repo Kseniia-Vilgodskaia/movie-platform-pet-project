@@ -1,14 +1,15 @@
 package com.example.movieplatformpetproject.api.dto;
 
 import com.example.movieplatformpetproject.model.MovieGenre;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.UUID;
 
+@Accessors(chain = true)
 @Getter
-@Builder
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class MovieOutputDto {
 

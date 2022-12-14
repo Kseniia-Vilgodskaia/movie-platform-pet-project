@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,61 +22,56 @@ public class MovieService {
      * @return - MovieOutputDto of created movie
      */
     public Movie create(MovieInputDto movieInputDto) {
-        Movie movie = Movie.builder()
-                .title(movieInputDto.getTitle())
-                .year(movieInputDto.getYear())
-                .genre(movieInputDto.getGenre())
-                .duration(movieInputDto.getDuration())
-                .director(movieInputDto.getDirector())
-                .build();
+        Movie movie = new Movie()
+                .setTitle(movieInputDto.getTitle())
+                .setYear(movieInputDto.getYear())
+                .setGenre(movieInputDto.getGenre())
+                .setDuration(movieInputDto.getDuration())
+                .setDirector(movieInputDto.getDirector());
         return movieRepository.save(movie);
     }
 
     /**
      * Find all movies from DB
+     *
      * @return - List of movies (MovieOutputDto)
      */
-    public List<Movie> findAll() {
+    public List<Movie> getAll() {
         return movieRepository.findAll();
     }
 
     /**
      * Find a movie by its ID
+     *
      * @param id - ID of the movie
      * @return - MovieOutputDto of the found movie
      */
-    public Movie findById(UUID id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        if (movie.isEmpty()) {
-            throw new RuntimeException("Movie not found by ID: " + id);
-        }
-        return movie.get();
+    public Movie get(UUID id) {
+        return movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found by ID: " + id));
     }
 
     /**
      * Update an existing movie
-     * @param id - ID of the movie
+     *
+     * @param id            - ID of the movie
      * @param movieInputDto - MovieInputDto of the movie
      * @return - MovieOutputDto of updated movie
      */
     public Movie update(UUID id, MovieInputDto movieInputDto) {
-        if (movieRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("Movie not found by ID: " + id);
-        }
-        Movie movie = Movie.builder()
-                .id(id)
-                .title(movieInputDto.getTitle())
-                .year(movieInputDto.getYear())
-                .genre(movieInputDto.getGenre())
-                .duration(movieInputDto.getDuration())
-                .director(movieInputDto.getDirector())
-                .build();
+        Movie movie = get(id);
+        movie.setId(id)
+                .setTitle(movieInputDto.getTitle())
+                .setYear(movieInputDto.getYear())
+                .setGenre(movieInputDto.getGenre())
+                .setDuration(movieInputDto.getDuration())
+                .setDirector(movieInputDto.getDirector());
         return movieRepository.save(movie);
     }
 
 
     /**
      * Delete an existing movie
+     *
      * @param id - ID of the movie
      */
     public void delete(UUID id) {

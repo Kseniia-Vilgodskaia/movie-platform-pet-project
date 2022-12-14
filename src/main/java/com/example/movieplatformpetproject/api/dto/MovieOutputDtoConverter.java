@@ -8,13 +8,12 @@ import org.springframework.stereotype.Component;
 public class MovieOutputDtoConverter {
 
     public MovieOutputDto convert(Movie movie) {
-        return MovieOutputDto.builder()
-                .id(movie.getId())
-                .title(movie.getTitle())
-                .year(movie.getYear())
-                .genre(movie.getGenre())
-                .duration(movie.getDuration())
-                .director(movie.getDirector())
-                .build();
+        return new MovieOutputDto()
+                .setId(movie.getId())
+                .setTitle(movie.getTitle())
+                .setYear(movie.getYear())
+                .setGenre(movie.getGenre())
+                .setDuration(movie.getDuration())
+                .setDirector(movie.getDirector());
     }
 }
