@@ -39,4 +39,10 @@ public class MovieRestController {
         Movie movie = movieService.findById(id);
         return movieOutputDtoConverter.convert(movie);
     }
+
+    @PutMapping("/{id}")
+    public MovieOutputDto update(@PathVariable UUID id, @RequestBody MovieInputDto movieInputDto) {
+        Movie movie = movieService.update(id, movieInputDto);
+        return movieOutputDtoConverter.convert(movie);
+    }
 }
