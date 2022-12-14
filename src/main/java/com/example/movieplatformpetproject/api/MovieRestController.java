@@ -27,16 +27,16 @@ public class MovieRestController {
     }
 
     @GetMapping
-    public List<MovieOutputDto> findAll() {
-        List<Movie> movies = movieService.findAll();
+    public List<MovieOutputDto> getAll() {
+        List<Movie> movies = movieService.getAll();
         return movies.stream()
                 .map(movieOutputDtoConverter::convert)
                 .toList();
     }
 
     @GetMapping("/{id}")
-    public MovieOutputDto findById(@PathVariable UUID id) {
-        Movie movie = movieService.findById(id);
+    public MovieOutputDto get(@PathVariable UUID id) {
+        Movie movie = movieService.get(id);
         return movieOutputDtoConverter.convert(movie);
     }
 
