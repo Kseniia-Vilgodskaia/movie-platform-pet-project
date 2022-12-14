@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/movies")
@@ -31,5 +32,11 @@ public class MovieRestController {
         return movies.stream()
                 .map(movieOutputDtoConverter::convert)
                 .toList();
+    }
+
+    @GetMapping("/{id}")
+    public MovieOutputDto findById(@PathVariable UUID id) {
+        Movie movie = movieService.findById(id);
+        return movieOutputDtoConverter.convert(movie);
     }
 }
