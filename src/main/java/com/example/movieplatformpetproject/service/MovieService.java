@@ -59,8 +59,7 @@ public class MovieService {
      */
     public Movie update(UUID id, MovieInputDto movieInputDto) {
         Movie movie = get(id);
-        movie.setId(id)
-                .setTitle(movieInputDto.getTitle())
+        movie.setTitle(movieInputDto.getTitle())
                 .setYear(movieInputDto.getYear())
                 .setGenre(movieInputDto.getGenre())
                 .setDuration(movieInputDto.getDuration())
