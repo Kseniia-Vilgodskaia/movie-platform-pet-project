@@ -1,13 +1,19 @@
 package com.example.movieplatformpetproject.api;
 
 import com.example.movieplatformpetproject.model.Movie;
+import com.example.movieplatformpetproject.repository.MovieRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class MovieValidator {
+
+    private final MovieRepository movieRepository;
 
 
     public void validate(Movie movie) {
@@ -33,6 +39,14 @@ public class MovieValidator {
 
         //Validate Director
         checkNotEmptyOrNull("Director", movie.getDirector(), validationErrors);
+
+        //Check if this movie already exists in DB
+        if (movie.getTitle() != null && movie.getYear() != null && movie.getDirector() != null) {
+            Optional<Movie> existingMovie = movieRepository.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector());
+            if (existingMovie.isPresent() && !existingMovie.get().getId().equals(movie.getId())) {
+                validationErrors.add("A movie with this title, release year, and director already exists");
+            }
+        }
 
         //In case there is at least one invalid field throw a validation exception
         if (!validationErrors.isEmpty()) {
