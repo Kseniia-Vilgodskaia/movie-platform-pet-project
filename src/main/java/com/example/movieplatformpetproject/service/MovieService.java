@@ -1,5 +1,7 @@
 package com.example.movieplatformpetproject.service;
 
+import com.example.movieplatformpetproject.api.MovieNotFoundException;
+import com.example.movieplatformpetproject.api.MovieValidator;
 import com.example.movieplatformpetproject.api.dto.MovieInputDto;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.repository.MovieRepository;
@@ -14,6 +16,7 @@ import java.util.UUID;
 public class MovieService {
 
     private final MovieRepository movieRepository;
+    private final MovieValidator movieValidator;
 
     /**
      * Create a new movie
@@ -28,6 +31,7 @@ public class MovieService {
                 .setGenre(movieInputDto.getGenre())
                 .setDuration(movieInputDto.getDuration())
                 .setDirector(movieInputDto.getDirector());
+        movieValidator.validate(movie);
         return movieRepository.save(movie);
     }
 
@@ -47,7 +51,7 @@ public class MovieService {
      * @return - MovieOutputDto of the found movie
      */
     public Movie get(UUID id) {
-        return movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found by ID: " + id));
+        return movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException("Movie not found by ID: " + id));
     }
 
     /**
@@ -64,6 +68,7 @@ public class MovieService {
                 .setGenre(movieInputDto.getGenre())
                 .setDuration(movieInputDto.getDuration())
                 .setDirector(movieInputDto.getDirector());
+        movieValidator.validate(movie);
         return movieRepository.save(movie);
     }
 
@@ -74,6 +79,6 @@ public class MovieService {
      * @param id - ID of the movie
      */
     public void delete(UUID id) {
-        movieRepository.deleteById(id);
+        movieRepository.delete(get(id));
     }
 }
