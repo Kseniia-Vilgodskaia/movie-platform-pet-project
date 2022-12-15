@@ -6,9 +6,11 @@ import com.example.movieplatformpetproject.api.dto.MovieInputDto;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,12 +38,15 @@ public class MovieService {
     }
 
     /**
-     * Find all movies from DB
-     *
-     * @return - List of movies (MovieOutputDto)
+     * Get a page with movies from DB
+     * @param page - page number
+     * @param size - number of movies on one page
+     * @param sort - field(s) for sorting
+     * @param direction - order of displaying
+     * @return - a page of movies
      */
-    public List<Movie> getAll() {
-        return movieRepository.findAll();
+    public Page<Movie> getPage(Integer page, Integer size, String sort, Sort.Direction direction) {
+        return movieRepository.findAll(PageRequest.of(page, size, Sort.by(direction, sort.split(","))));
     }
 
     /**

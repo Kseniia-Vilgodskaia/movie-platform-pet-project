@@ -6,9 +6,10 @@ import com.example.movieplatformpetproject.api.dto.MovieOutputDtoConverter;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -27,11 +28,12 @@ public class MovieRestController {
     }
 
     @GetMapping
-    public List<MovieOutputDto> getAll() {
-        List<Movie> movies = movieService.getAll();
-        return movies.stream()
-                .map(movieOutputDtoConverter::convert)
-                .toList();
+    public Page<MovieOutputDto> getPage(@RequestParam(defaultValue = "0", required = false) Integer page,
+                                        @RequestParam(defaultValue = "5", required = false) Integer size,
+                                        @RequestParam(defaultValue = "year", required = false) String sort,
+                                        @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction) {
+        Page<Movie> movies = movieService.getPage(page, size, sort, direction);
+        return movies.map(movieOutputDtoConverter::convert);
     }
 
     @GetMapping("/{id}")
