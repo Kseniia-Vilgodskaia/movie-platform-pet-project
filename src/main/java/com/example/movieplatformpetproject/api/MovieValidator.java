@@ -14,31 +14,25 @@ public class MovieValidator {
         List<String> validationErrors = new ArrayList<>();
 
         //Validate Title
-        checkIfEmptyOrNull("Title", movie.getTitle(), validationErrors);
-        if (movie.getTitle() != null && !movie.getTitle().matches("[a-zA-Z0-9]")) {
-            validationErrors.add("The movie title should consist of letters of the Latin alphabet or/and numbers");
-        }
+        checkNotEmptyOrNull("Title", movie.getTitle(), validationErrors);
 
         //Validate Year
-        checkIfEmptyOrNull("Year", movie.getYear(), validationErrors);
+        checkNotNull("Year", movie.getYear(), validationErrors);
         if (movie.getYear() != null && movie.getYear() < 1895) {
             validationErrors.add("The movie release year should be not before 1895");
         }
 
         //Validate Genre
-        checkIfEmptyOrNull("Genre", movie.getGenre(), validationErrors);
+        checkNotNull("Genre", movie.getGenre(), validationErrors);
 
         //Validate Duration
-        checkIfEmptyOrNull("Duration", movie.getDuration(), validationErrors);
+        checkNotNull("Duration", movie.getDuration(), validationErrors);
         if (movie.getDuration() != null && movie.getDuration() <= 0) {
             validationErrors.add("The movie duration should not be less than 1 minute");
         }
 
         //Validate Director
-        checkIfEmptyOrNull("Director", movie.getDirector(), validationErrors);
-        if (movie.getDirector() != null && !movie.getDirector().matches("[a-zA-Z]")) {
-            validationErrors.add("The director's name should consist of letters of the Latin alphabet");
-        }
+        checkNotEmptyOrNull("Director", movie.getDirector(), validationErrors);
 
         //In case there is at least one invalid field throw a validation exception
         if (!validationErrors.isEmpty()) {
@@ -46,10 +40,15 @@ public class MovieValidator {
         }
     }
 
-    private void checkIfEmptyOrNull(String fieldName, Object value, List<String> validationErrors) {
+    private void checkNotNull(String fieldName, Object value, List<String> validationErrors) {
         if (value == null) {
             validationErrors.add(fieldName + " field should not be null");
-        } else if (value instanceof String && ((String) value).isEmpty()) {
+        }
+    }
+
+    private void checkNotEmptyOrNull(String fieldName, String value, List<String> validationErrors) {
+        checkNotNull(fieldName, value, validationErrors);
+        if (value != null && value.isEmpty()) {
             validationErrors.add(fieldName + " field should not be empty");
         }
     }
