@@ -1,6 +1,6 @@
 CREATE TABLE movie
 (
-    id       uuid       NOT NULL PRIMARY KEY,
+    id       uuid         NOT NULL PRIMARY KEY,
     title    varchar(254) NOT NULL,
     year     integer      NOT NULL,
     genre    varchar(254) NOT NULL,
