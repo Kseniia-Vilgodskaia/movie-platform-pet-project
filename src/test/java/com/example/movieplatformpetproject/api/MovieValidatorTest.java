@@ -124,6 +124,13 @@ class MovieValidatorTest {
     }
 
     @Test
+    void should_NotThrowMovieValidationException_when_ChangingExistingMovie() {
+        Mockito.when(movieRepositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
+                .thenReturn(Optional.of(movie));
+        assertDoesNotThrow(() -> movieValidator.validate(movie));
+    }
+
+    @Test
     void should_ThrowMovieValidationExceptionForYearAndDurationFields_when_NotCorrectYearAndDuration() {
         movie.setYear(1036);
         movie.setDuration(0);
