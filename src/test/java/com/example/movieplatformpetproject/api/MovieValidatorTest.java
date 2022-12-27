@@ -22,96 +22,88 @@ class MovieValidatorTest {
     @BeforeEach
     void setUp() {
         movie = new Movie()
-                .setId(UUID.fromString("2f20a347-cab1-4a41-8b00-4c59217eaa6b"))
+                .setId(UUID.randomUUID())
                 .setTitle("How to Lose a Guy in 10 Days")
                 .setYear(2003)
                 .setGenre(MovieGenre.ROMANCE)
                 .setDuration(116)
                 .setDirector("Donald Petrie");
-    }
-
-    private void checkFieldValidationSingleError(String expectedErrorMessage) {
-        MovieValidationException exception = assertThrows(MovieValidationException.class, () -> movieValidator.validate(movie));
-        assertAll(
-                () -> assertEquals(1, exception.getValidationErrors().size()),
-                () -> assertEquals(expectedErrorMessage, exception.getValidationErrors().get(0))
-        );
+        Mockito.when(movieRepositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
+                .thenReturn(Optional.empty());
     }
 
     @Test
     void should_NotThrowMovieValidationException_when_CorrectUniqueMovie() {
-        Mockito.when(movieRepositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
-                .thenReturn(Optional.empty());
         assertDoesNotThrow(() -> movieValidator.validate(movie));
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForTitleNullField_when_TitleNull() {
         movie.setTitle(null);
-        String expectedErrorMessage = "Title field should not be null";
+        String expectedErrorMessage = "Title" + MovieValidator.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForTitleEmptyField_when_TitleEmpty() {
         movie.setTitle("");
-        String expectedErrorMessage = "Title field should not be empty";
+        String expectedErrorMessage = "Title" + MovieValidator.FIELD_EMPTY_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForYearNullField_when_YearNull() {
         movie.setYear(null);
-        String expectedErrorMessage = "Year field should not be null";
+        String expectedErrorMessage = "Year" + MovieValidator.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForYearNotCorrectField_when_YearLessThan1895() {
         movie.setYear(1232);
-        String expectedErrorMessage = "The movie release year should be not before 1895";
+        String expectedErrorMessage = MovieValidator.YEAR_NOT_VALID;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForGenreNullField_when_GenreNull() {
         movie.setGenre(null);
-        String expectedErrorMessage = "Genre field should not be null";
+        String expectedErrorMessage = "Genre" + MovieValidator.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDurationNullField_when_DurationNull() {
         movie.setDuration(null);
-        String expectedErrorMessage = "Duration field should not be null";
+        String expectedErrorMessage = "Duration" + MovieValidator.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDurationNotCorrectField_when_DurationLessThanOrEqualTo0() {
         movie.setDuration(-12);
-        String expectedErrorMessage = "The movie duration should not be less than 1 minute";
+        String expectedErrorMessage = MovieValidator.DURATION_NOT_VALID;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDirectorNullField_when_DirectorNull() {
         movie.setDirector(null);
-        String expectedErrorMessage = "Director field should not be null";
+        String expectedErrorMessage = "Director" + MovieValidator.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDirectorEmptyField_when_DirectorEmpty() {
         movie.setDirector("");
-        String expectedErrorMessage = "Director field should not be empty";
+        String expectedErrorMessage = "Director" + MovieValidator.FIELD_EMPTY_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForNotUniqueMovie_when_AnotherMovieWithTitleAndYearAndDirectorExistsInDb() {
         Movie storedMovie = new Movie()
-                .setId(UUID.fromString("f7da5057-a460-482f-a4fc-9ff8e373fd02"))
+                .setId(UUID.randomUUID())
                 .setTitle(movie.getTitle())
                 .setYear(movie.getYear())
                 .setGenre(MovieGenre.DRAMA)
@@ -127,7 +119,7 @@ class MovieValidatorTest {
                 () -> assertEquals(storedMovie.getDirector(), movie.getDirector())
         );
 
-        String expectedErrorMessage = "A movie with this title, release year, and director already exists";
+        String expectedErrorMessage = MovieValidator.MOVIE_NOT_UNIQUE;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
@@ -136,8 +128,8 @@ class MovieValidatorTest {
         movie.setYear(1036);
         movie.setDuration(0);
         List<String> expectedErrorMessages = List.of(
-                "The movie release year should be not before 1895",
-                "The movie duration should not be less than 1 minute");
+                MovieValidator.YEAR_NOT_VALID,
+                MovieValidator.DURATION_NOT_VALID);
         MovieValidationException exception = assertThrows(MovieValidationException.class, () -> movieValidator.validate(movie));
         assertAll(
                 () -> assertEquals(expectedErrorMessages.size(), exception.getValidationErrors().size()),
@@ -146,4 +138,11 @@ class MovieValidatorTest {
 
     }
 
+    private void checkFieldValidationSingleError(String expectedErrorMessage) {
+        MovieValidationException exception = assertThrows(MovieValidationException.class, () -> movieValidator.validate(movie));
+        assertAll(
+                () -> assertEquals(1, exception.getValidationErrors().size()),
+                () -> assertEquals(expectedErrorMessage, exception.getValidationErrors().get(0))
+        );
+    }
 }

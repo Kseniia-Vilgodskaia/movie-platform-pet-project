@@ -13,6 +13,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MovieValidator {
 
+    public static final String FIELD_NULL_POSTFIX = " field should not be null";
+    public static final String FIELD_EMPTY_POSTFIX = " field should not be empty";
+    public static final String YEAR_NOT_VALID = "The movie release year should be not before 1895";
+    public static final String DURATION_NOT_VALID = "The movie duration should not be less than 1 minute";
+    public static final String MOVIE_NOT_UNIQUE = "A movie with this title, release year, and director already exists";
+
     private final MovieRepository movieRepository;
 
 
@@ -25,7 +31,7 @@ public class MovieValidator {
         //Validate Year
         checkNotNull("Year", movie.getYear(), validationErrors);
         if (movie.getYear() != null && movie.getYear() < 1895) {
-            validationErrors.add("The movie release year should be not before 1895");
+            validationErrors.add(YEAR_NOT_VALID);
         }
 
         //Validate Genre
@@ -34,7 +40,7 @@ public class MovieValidator {
         //Validate Duration
         checkNotNull("Duration", movie.getDuration(), validationErrors);
         if (movie.getDuration() != null && movie.getDuration() <= 0) {
-            validationErrors.add("The movie duration should not be less than 1 minute");
+            validationErrors.add(DURATION_NOT_VALID);
         }
 
         //Validate Director
@@ -44,7 +50,7 @@ public class MovieValidator {
         if (movie.getTitle() != null && movie.getYear() != null && movie.getDirector() != null) {
             Optional<Movie> existingMovie = movieRepository.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector());
             if (existingMovie.isPresent() && !existingMovie.get().getId().equals(movie.getId())) {
-                validationErrors.add("A movie with this title, release year, and director already exists");
+                validationErrors.add(MOVIE_NOT_UNIQUE);
             }
         }
 
@@ -56,14 +62,14 @@ public class MovieValidator {
 
     private void checkNotNull(String fieldName, Object value, List<String> validationErrors) {
         if (value == null) {
-            validationErrors.add(fieldName + " field should not be null");
+            validationErrors.add(fieldName + FIELD_NULL_POSTFIX);
         }
     }
 
     private void checkNotEmptyOrNull(String fieldName, String value, List<String> validationErrors) {
         checkNotNull(fieldName, value, validationErrors);
         if (value != null && value.isEmpty()) {
-            validationErrors.add(fieldName + " field should not be empty");
+            validationErrors.add(fieldName + FIELD_EMPTY_POSTFIX);
         }
     }
 }
