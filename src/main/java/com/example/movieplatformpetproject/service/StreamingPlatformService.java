@@ -49,7 +49,7 @@ public class StreamingPlatformService {
     public StreamingPlatform get(UUID id) {
         return streamingPlatformRepository
                 .findById(id)
-                .orElseThrow(() -> new StreamingPlatformNotFoundException("Streaming Platform not found by id: " + id));
+                .orElseThrow(() -> new StreamingPlatformNotFoundException(id));
     }
 
     /**

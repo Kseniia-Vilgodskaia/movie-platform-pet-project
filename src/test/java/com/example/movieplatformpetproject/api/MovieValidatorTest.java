@@ -42,21 +42,21 @@ class MovieValidatorTest {
     @Test
     void should_ThrowMovieValidationExceptionForTitleNullField_when_TitleNull() {
         movie.setTitle(null);
-        String expectedErrorMessage = "Title" + MovieValidator.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Title" + ValidationUtil.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForTitleEmptyField_when_TitleEmpty() {
         movie.setTitle("");
-        String expectedErrorMessage = "Title" + MovieValidator.FIELD_EMPTY_POSTFIX;
+        String expectedErrorMessage = "Title" + ValidationUtil.FIELD_EMPTY_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForYearNullField_when_YearNull() {
         movie.setYear(null);
-        String expectedErrorMessage = "Year" + MovieValidator.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Year" + ValidationUtil.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
@@ -70,14 +70,14 @@ class MovieValidatorTest {
     @Test
     void should_ThrowMovieValidationExceptionForGenreNullField_when_GenreNull() {
         movie.setGenre(null);
-        String expectedErrorMessage = "Genre" + MovieValidator.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Genre" + ValidationUtil.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDurationNullField_when_DurationNull() {
         movie.setDuration(null);
-        String expectedErrorMessage = "Duration" + MovieValidator.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Duration" + ValidationUtil.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
@@ -91,14 +91,14 @@ class MovieValidatorTest {
     @Test
     void should_ThrowMovieValidationExceptionForDirectorNullField_when_DirectorNull() {
         movie.setDirector(null);
-        String expectedErrorMessage = "Director" + MovieValidator.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Director" + ValidationUtil.FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDirectorEmptyField_when_DirectorEmpty() {
         movie.setDirector("");
-        String expectedErrorMessage = "Director" + MovieValidator.FIELD_EMPTY_POSTFIX;
+        String expectedErrorMessage = "Director" + ValidationUtil.FIELD_EMPTY_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
