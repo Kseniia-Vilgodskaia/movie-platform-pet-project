@@ -6,9 +6,11 @@ import com.example.movieplatformpetproject.api.streamingplatform.dto.StreamingPl
 import com.example.movieplatformpetproject.model.StreamingPlatform;
 import com.example.movieplatformpetproject.repository.StreamingPlatformRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,12 +34,16 @@ public class StreamingPlatformService {
     }
 
     /**
-     * Get all existing streaming platforms
+     * Get a page with streaming platforms from DB
      *
-     * @return - list of all streaming platforms
+     * @param page      - page number
+     * @param size      - number of streaming platforms on one page
+     * @param sort      - field(s) for sorting
+     * @param direction - order of displaying
+     * @return - a page of streaming platforms
      */
-    public List<StreamingPlatform> getAll() {
-        return streamingPlatformRepository.findAll();
+    public Page<StreamingPlatform> getAll(Integer page, Integer size, String sort, Sort.Direction direction) {
+        return streamingPlatformRepository.findAll(PageRequest.of(page, size, direction, sort.split(",")));
     }
 
     /**
