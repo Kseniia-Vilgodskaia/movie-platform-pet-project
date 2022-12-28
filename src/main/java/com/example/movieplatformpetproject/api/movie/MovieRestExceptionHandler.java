@@ -1,5 +1,6 @@
 package com.example.movieplatformpetproject.api.movie;
 
+import com.example.movieplatformpetproject.api.CustomErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,14 +12,14 @@ import java.util.List;
 public class MovieRestExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<MovieErrorResponse> handleException(MovieNotFoundException exception) {
-        return new ResponseEntity<>(new MovieErrorResponse(List.of(exception.getMessage()), HttpStatus.NOT_FOUND.value()),
+    public ResponseEntity<CustomErrorResponse> handleException(MovieNotFoundException exception) {
+        return new ResponseEntity<>(new CustomErrorResponse(List.of(exception.getMessage())),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
-    public ResponseEntity<MovieErrorResponse> handleException(MovieValidationException exception) {
-        return new ResponseEntity<>(new MovieErrorResponse(exception.getValidationErrors(), HttpStatus.CONFLICT.value()),
+    public ResponseEntity<CustomErrorResponse> handleException(MovieValidationException exception) {
+        return new ResponseEntity<>(new CustomErrorResponse(exception.getValidationErrors()),
                 HttpStatus.CONFLICT);
     }
 }
