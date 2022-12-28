@@ -1,8 +1,8 @@
-package com.example.movieplatformpetproject.api;
+package com.example.movieplatformpetproject.api.movie;
 
-import com.example.movieplatformpetproject.api.dto.MovieInputDto;
-import com.example.movieplatformpetproject.api.dto.MovieOutputDto;
-import com.example.movieplatformpetproject.api.dto.MovieOutputDtoConverter;
+import com.example.movieplatformpetproject.api.movie.dto.MovieInputDto;
+import com.example.movieplatformpetproject.api.movie.dto.MovieOutputDto;
+import com.example.movieplatformpetproject.api.movie.dto.MovieOutputDtoConverter;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.service.MovieService;
 import lombok.RequiredArgsConstructor;
