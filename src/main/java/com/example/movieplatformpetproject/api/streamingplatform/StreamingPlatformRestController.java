@@ -27,11 +27,11 @@ public class StreamingPlatformRestController {
     }
 
     @GetMapping
-    public Page<StreamingPlatformOutputDto> getAll(@RequestParam(defaultValue = "0", required = false) Integer page,
-                                                   @RequestParam(defaultValue = "3", required = false) Integer size,
-                                                   @RequestParam(defaultValue = "name", required = false) String sort,
-                                                   @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction) {
-        return streamingPlatformService.getAll(page, size, sort, direction)
+    public Page<StreamingPlatformOutputDto> getPage(@RequestParam(defaultValue = "0", required = false) Integer page,
+                                                    @RequestParam(defaultValue = "3", required = false) Integer size,
+                                                    @RequestParam(defaultValue = "name", required = false) String sort,
+                                                    @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction) {
+        return streamingPlatformService.getPage(page, size, sort, direction)
                 .map(streamingPlatformOutputConverter::convert);
     }
 
