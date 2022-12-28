@@ -6,6 +6,9 @@ import com.example.movieplatformpetproject.repository.StreamingPlatformRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class StreamingPlatformService {
@@ -22,5 +25,47 @@ public class StreamingPlatformService {
         StreamingPlatform streamingPlatform = new StreamingPlatform()
                 .setName(streamingPlatformInputDto.getName());
         return streamingPlatformRepository.save(streamingPlatform);
+    }
+
+    /**
+     * Get all existing streaming platforms
+     *
+     * @return - list of all streaming platforms
+     */
+    public List<StreamingPlatform> getAll() {
+        return streamingPlatformRepository.findAll();
+    }
+
+    /**
+     * Get an existing streaming platform by its ID
+     *
+     * @param id - ID of the streaming platform
+     * @return - found streaming platform
+     */
+    public StreamingPlatform get(UUID id) {
+        return streamingPlatformRepository.findById(id).orElseThrow(() -> new RuntimeException("Streaming Platform not found by id: " + id));
+    }
+
+    /**
+     * Update an existing streaming platform
+     *
+     * @param id                        - ID of the streaming platform
+     * @param streamingPlatformInputDto - streamingPlatformInputDto of the streaming platform
+     * @return - updated streaming platform
+     */
+    public StreamingPlatform update(UUID id, StreamingPlatformInputDto streamingPlatformInputDto) {
+        StreamingPlatform streamingPlatform = get(id);
+        streamingPlatform.setName(streamingPlatformInputDto.getName());
+        return streamingPlatformRepository.save(streamingPlatform);
+    }
+
+    /**
+     * Delete an existing streaming platform
+     *
+     * @param id - ID of the streaming platform
+     */
+    public void delete(UUID id) {
+        StreamingPlatform streamingPlatform = get(id);
+        streamingPlatformRepository.delete(streamingPlatform);
     }
 }
