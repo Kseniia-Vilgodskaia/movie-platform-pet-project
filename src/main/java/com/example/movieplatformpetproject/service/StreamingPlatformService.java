@@ -42,7 +42,7 @@ public class StreamingPlatformService {
      * @param direction - order of displaying
      * @return - a page of streaming platforms
      */
-    public Page<StreamingPlatform> getAll(Integer page, Integer size, String sort, Sort.Direction direction) {
+    public Page<StreamingPlatform> getPage(Integer page, Integer size, String sort, Sort.Direction direction) {
         return streamingPlatformRepository.findAll(PageRequest.of(page, size, direction, sort.split(",")));
     }
 
