@@ -1,6 +1,5 @@
 package com.example.movieplatformpetproject.api.movie;
 
-import com.example.movieplatformpetproject.api.ValidationUtil;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.movieplatformpetproject.api.ValidationUtil.checkNotEmptyAndNotNull;
+import static com.example.movieplatformpetproject.api.ValidationUtil.checkNotNull;
 
 @Component
 @RequiredArgsConstructor
@@ -25,25 +27,25 @@ public class MovieValidator {
         List<String> validationErrors = new ArrayList<>();
 
         //Validate Title
-        ValidationUtil.checkNotEmptyOrNull("Title", movie.getTitle(), validationErrors);
+        checkNotEmptyAndNotNull("Title", movie.getTitle(), validationErrors);
 
         //Validate Year
-        ValidationUtil.checkNotNull("Year", movie.getYear(), validationErrors);
+        checkNotNull("Year", movie.getYear(), validationErrors);
         if (movie.getYear() != null && movie.getYear() < 1895) {
             validationErrors.add(YEAR_NOT_VALID);
         }
 
         //Validate Genre
-        ValidationUtil.checkNotNull("Genre", movie.getGenre(), validationErrors);
+        checkNotNull("Genre", movie.getGenre(), validationErrors);
 
         //Validate Duration
-        ValidationUtil.checkNotNull("Duration", movie.getDuration(), validationErrors);
+        checkNotNull("Duration", movie.getDuration(), validationErrors);
         if (movie.getDuration() != null && movie.getDuration() <= 0) {
             validationErrors.add(DURATION_NOT_VALID);
         }
 
         //Validate Director
-        ValidationUtil.checkNotEmptyOrNull("Director", movie.getDirector(), validationErrors);
+        checkNotEmptyAndNotNull("Director", movie.getDirector(), validationErrors);
 
         //Check if this movie already exists in DB
         if (movie.getTitle() != null && movie.getYear() != null && movie.getDirector() != null) {

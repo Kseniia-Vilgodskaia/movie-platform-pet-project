@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.example.movieplatformpetproject.api.ValidationUtil.FIELD_EMPTY_POSTFIX;
+import static com.example.movieplatformpetproject.api.ValidationUtil.FIELD_NULL_POSTFIX;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MovieValidatorTest {
@@ -42,21 +44,21 @@ class MovieValidatorTest {
     @Test
     void should_ThrowMovieValidationExceptionForTitleNullField_when_TitleNull() {
         movie.setTitle(null);
-        String expectedErrorMessage = "Title" + ValidationUtil.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Title" + FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForTitleEmptyField_when_TitleEmpty() {
         movie.setTitle("");
-        String expectedErrorMessage = "Title" + ValidationUtil.FIELD_EMPTY_POSTFIX;
+        String expectedErrorMessage = "Title" + FIELD_EMPTY_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForYearNullField_when_YearNull() {
         movie.setYear(null);
-        String expectedErrorMessage = "Year" + ValidationUtil.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Year" + FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
@@ -70,14 +72,14 @@ class MovieValidatorTest {
     @Test
     void should_ThrowMovieValidationExceptionForGenreNullField_when_GenreNull() {
         movie.setGenre(null);
-        String expectedErrorMessage = "Genre" + ValidationUtil.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Genre" + FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDurationNullField_when_DurationNull() {
         movie.setDuration(null);
-        String expectedErrorMessage = "Duration" + ValidationUtil.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Duration" + FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
@@ -91,14 +93,14 @@ class MovieValidatorTest {
     @Test
     void should_ThrowMovieValidationExceptionForDirectorNullField_when_DirectorNull() {
         movie.setDirector(null);
-        String expectedErrorMessage = "Director" + ValidationUtil.FIELD_NULL_POSTFIX;
+        String expectedErrorMessage = "Director" + FIELD_NULL_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDirectorEmptyField_when_DirectorEmpty() {
         movie.setDirector("");
-        String expectedErrorMessage = "Director" + ValidationUtil.FIELD_EMPTY_POSTFIX;
+        String expectedErrorMessage = "Director" + FIELD_EMPTY_POSTFIX;
         checkFieldValidationSingleError(expectedErrorMessage);
     }
 

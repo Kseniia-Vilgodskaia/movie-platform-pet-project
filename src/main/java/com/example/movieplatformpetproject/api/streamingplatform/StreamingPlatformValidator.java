@@ -1,6 +1,5 @@
 package com.example.movieplatformpetproject.api.streamingplatform;
 
-import com.example.movieplatformpetproject.api.ValidationUtil;
 import com.example.movieplatformpetproject.model.StreamingPlatform;
 import com.example.movieplatformpetproject.repository.StreamingPlatformRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.movieplatformpetproject.api.ValidationUtil.checkNotEmptyAndNotNull;
 
 @Component
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class StreamingPlatformValidator {
     public void validate(StreamingPlatform streamingPlatform) {
         List<String> errorMessages = new ArrayList<>();
         String streamingPlatformName = streamingPlatform.getName();
-        ValidationUtil.checkNotEmptyOrNull("Name", streamingPlatformName, errorMessages);
+        checkNotEmptyAndNotNull("Name", streamingPlatformName, errorMessages);
 
         if (streamingPlatformName != null) {
             Optional<StreamingPlatform> existingPlatform = streamingPlatformRepository.findByName(streamingPlatformName);

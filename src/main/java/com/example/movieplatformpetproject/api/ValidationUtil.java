@@ -13,7 +13,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkNotEmptyOrNull(String fieldName, String value, List<String> validationErrors) {
+    public static void checkNotEmptyAndNotNull(String fieldName, String value, List<String> validationErrors) {
         checkNotNull(fieldName, value, validationErrors);
         if (value != null && value.isEmpty()) {
             validationErrors.add(fieldName + FIELD_EMPTY_POSTFIX);
