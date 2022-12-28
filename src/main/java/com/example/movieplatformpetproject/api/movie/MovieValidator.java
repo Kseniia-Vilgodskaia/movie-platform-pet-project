@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.movieplatformpetproject.api.ValidationUtil.checkNotEmptyAndNotNull;
+import static com.example.movieplatformpetproject.api.ValidationUtil.checkNotNull;
+
 @Component
 @RequiredArgsConstructor
 public class MovieValidator {
 
-    public static final String FIELD_NULL_POSTFIX = " field should not be null";
-    public static final String FIELD_EMPTY_POSTFIX = " field should not be empty";
     public static final String YEAR_NOT_VALID = "The movie release year should be not before 1895";
     public static final String DURATION_NOT_VALID = "The movie duration should not be less than 1 minute";
     public static final String MOVIE_NOT_UNIQUE = "A movie with this title, release year, and director already exists";
@@ -26,7 +27,7 @@ public class MovieValidator {
         List<String> validationErrors = new ArrayList<>();
 
         //Validate Title
-        checkNotEmptyOrNull("Title", movie.getTitle(), validationErrors);
+        checkNotEmptyAndNotNull("Title", movie.getTitle(), validationErrors);
 
         //Validate Year
         checkNotNull("Year", movie.getYear(), validationErrors);
@@ -44,7 +45,7 @@ public class MovieValidator {
         }
 
         //Validate Director
-        checkNotEmptyOrNull("Director", movie.getDirector(), validationErrors);
+        checkNotEmptyAndNotNull("Director", movie.getDirector(), validationErrors);
 
         //Check if this movie already exists in DB
         if (movie.getTitle() != null && movie.getYear() != null && movie.getDirector() != null) {
@@ -57,19 +58,6 @@ public class MovieValidator {
         //In case there is at least one invalid field throw a validation exception
         if (!validationErrors.isEmpty()) {
             throw new MovieValidationException(validationErrors);
-        }
-    }
-
-    private void checkNotNull(String fieldName, Object value, List<String> validationErrors) {
-        if (value == null) {
-            validationErrors.add(fieldName + FIELD_NULL_POSTFIX);
-        }
-    }
-
-    private void checkNotEmptyOrNull(String fieldName, String value, List<String> validationErrors) {
-        checkNotNull(fieldName, value, validationErrors);
-        if (value != null && value.isEmpty()) {
-            validationErrors.add(fieldName + FIELD_EMPTY_POSTFIX);
         }
     }
 }

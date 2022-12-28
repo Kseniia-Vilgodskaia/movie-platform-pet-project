@@ -1,5 +1,7 @@
 package com.example.movieplatformpetproject.service;
 
+import com.example.movieplatformpetproject.api.streamingplatform.StreamingPlatformNotFoundException;
+import com.example.movieplatformpetproject.api.streamingplatform.StreamingPlatformValidator;
 import com.example.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformInputDto;
 import com.example.movieplatformpetproject.model.StreamingPlatform;
 import com.example.movieplatformpetproject.repository.StreamingPlatformRepository;
@@ -14,6 +16,7 @@ import java.util.UUID;
 public class StreamingPlatformService {
 
     private final StreamingPlatformRepository streamingPlatformRepository;
+    private final StreamingPlatformValidator streamingPlatformValidator;
 
     /**
      * Create a new streaming platform
@@ -24,6 +27,7 @@ public class StreamingPlatformService {
     public StreamingPlatform create(StreamingPlatformInputDto streamingPlatformInputDto) {
         StreamingPlatform streamingPlatform = new StreamingPlatform()
                 .setName(streamingPlatformInputDto.getName());
+        streamingPlatformValidator.validate(streamingPlatform);
         return streamingPlatformRepository.save(streamingPlatform);
     }
 
@@ -43,7 +47,9 @@ public class StreamingPlatformService {
      * @return - found streaming platform
      */
     public StreamingPlatform get(UUID id) {
-        return streamingPlatformRepository.findById(id).orElseThrow(() -> new RuntimeException("Streaming Platform not found by id: " + id));
+        return streamingPlatformRepository
+                .findById(id)
+                .orElseThrow(() -> new StreamingPlatformNotFoundException(id));
     }
 
     /**
@@ -56,6 +62,7 @@ public class StreamingPlatformService {
     public StreamingPlatform update(UUID id, StreamingPlatformInputDto streamingPlatformInputDto) {
         StreamingPlatform streamingPlatform = get(id);
         streamingPlatform.setName(streamingPlatformInputDto.getName());
+        streamingPlatformValidator.validate(streamingPlatform);
         return streamingPlatformRepository.save(streamingPlatform);
     }
 

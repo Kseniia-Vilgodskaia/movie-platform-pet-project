@@ -56,7 +56,7 @@ public class MovieService {
      * @return - MovieOutputDto of the found movie
      */
     public Movie get(UUID id) {
-        return movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException("Movie not found by ID: " + id));
+        return movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(id));
     }
 
     /**
