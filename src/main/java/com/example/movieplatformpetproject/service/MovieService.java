@@ -1,8 +1,8 @@
 package com.example.movieplatformpetproject.service;
 
-import com.example.movieplatformpetproject.api.MovieNotFoundException;
-import com.example.movieplatformpetproject.api.MovieValidator;
-import com.example.movieplatformpetproject.api.dto.MovieInputDto;
+import com.example.movieplatformpetproject.api.movie.MovieNotFoundException;
+import com.example.movieplatformpetproject.api.movie.MovieValidator;
+import com.example.movieplatformpetproject.api.movie.dto.MovieInputDto;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class MovieService {
      * Create a new movie
      *
      * @param movieInputDto - MovieInputDto of the movie
-     * @return - MovieOutputDto of created movie
+     * @return - created movie
      */
     public Movie create(MovieInputDto movieInputDto) {
         Movie movie = new Movie()

@@ -1,5 +1,7 @@
 package com.example.movieplatformpetproject.api;
 
+import com.example.movieplatformpetproject.api.movie.MovieValidationException;
+import com.example.movieplatformpetproject.api.movie.MovieValidator;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.model.MovieGenre;
 import com.example.movieplatformpetproject.repository.MovieRepository;

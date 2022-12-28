@@ -1,7 +1,9 @@
-package com.example.movieplatformpetproject.api.dto;
+package com.example.movieplatformpetproject.api.movie.dto;
 
 import com.example.movieplatformpetproject.model.MovieGenre;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.UUID;

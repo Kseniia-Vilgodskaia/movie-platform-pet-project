@@ -1,4 +1,4 @@
-package com.example.movieplatformpetproject.api.dto;
+package com.example.movieplatformpetproject.api.movie.dto;
 
 
 import com.example.movieplatformpetproject.model.Movie;

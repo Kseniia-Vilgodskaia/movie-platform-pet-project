@@ -1,4 +1,4 @@
-package com.example.movieplatformpetproject.api;
+package com.example.movieplatformpetproject.api.movie;
 
 public class MovieNotFoundException extends RuntimeException {
 

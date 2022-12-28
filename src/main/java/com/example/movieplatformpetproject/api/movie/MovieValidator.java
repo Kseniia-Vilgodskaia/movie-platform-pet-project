@@ -1,4 +1,4 @@
-package com.example.movieplatformpetproject.api;
+package com.example.movieplatformpetproject.api.movie;
 
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.repository.MovieRepository;
