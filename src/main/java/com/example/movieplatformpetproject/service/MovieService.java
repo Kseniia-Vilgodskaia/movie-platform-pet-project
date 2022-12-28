@@ -1,8 +1,7 @@
 package com.example.movieplatformpetproject.service;
 
-import com.example.movieplatformpetproject.api.movie.MovieNotFoundException;
-import com.example.movieplatformpetproject.api.movie.MovieValidator;
 import com.example.movieplatformpetproject.api.movie.dto.MovieInputDto;
+import com.example.movieplatformpetproject.config.exceptions.MovieNotFoundException;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,10 @@
 package com.example.movieplatformpetproject.api;
 
-import com.example.movieplatformpetproject.api.movie.MovieValidationException;
-import com.example.movieplatformpetproject.api.movie.MovieValidator;
+import com.example.movieplatformpetproject.config.exceptions.MovieValidationException;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.model.MovieGenre;
 import com.example.movieplatformpetproject.repository.MovieRepository;
+import com.example.movieplatformpetproject.service.MovieValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.example.movieplatformpetproject.api.ValidationUtil.FIELD_EMPTY_POSTFIX;
-import static com.example.movieplatformpetproject.api.ValidationUtil.FIELD_NULL_POSTFIX;
+import static com.example.movieplatformpetproject.util.ValidationUtil.FIELD_EMPTY_POSTFIX;
+import static com.example.movieplatformpetproject.util.ValidationUtil.FIELD_NULL_POSTFIX;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MovieValidatorTest {

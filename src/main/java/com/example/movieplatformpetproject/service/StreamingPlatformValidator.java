@@ -1,5 +1,6 @@
-package com.example.movieplatformpetproject.api.streamingplatform;
+package com.example.movieplatformpetproject.service;
 
+import com.example.movieplatformpetproject.config.exceptions.StreamingPlatformValidationException;
 import com.example.movieplatformpetproject.model.StreamingPlatform;
 import com.example.movieplatformpetproject.repository.StreamingPlatformRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.movieplatformpetproject.api.ValidationUtil.checkNotEmptyAndNotNull;
+import static com.example.movieplatformpetproject.util.ValidationUtil.checkNotEmptyAndNotNull;
 
 @Component
 @RequiredArgsConstructor

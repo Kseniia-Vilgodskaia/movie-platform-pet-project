@@ -1,5 +1,6 @@
-package com.example.movieplatformpetproject.api.movie;
+package com.example.movieplatformpetproject.service;
 
+import com.example.movieplatformpetproject.config.exceptions.MovieValidationException;
 import com.example.movieplatformpetproject.model.Movie;
 import com.example.movieplatformpetproject.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.movieplatformpetproject.api.ValidationUtil.checkNotEmptyAndNotNull;
-import static com.example.movieplatformpetproject.api.ValidationUtil.checkNotNull;
+import static com.example.movieplatformpetproject.util.ValidationUtil.checkNotEmptyAndNotNull;
+import static com.example.movieplatformpetproject.util.ValidationUtil.checkNotNull;
 
 @Component
 @RequiredArgsConstructor

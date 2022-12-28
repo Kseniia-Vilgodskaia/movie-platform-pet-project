@@ -1,4 +1,4 @@
-package com.example.movieplatformpetproject.api.movie;
+package com.example.movieplatformpetproject.config.exceptions;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

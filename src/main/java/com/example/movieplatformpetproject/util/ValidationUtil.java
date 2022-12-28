@@ -1,4 +1,4 @@
-package com.example.movieplatformpetproject.api;
+package com.example.movieplatformpetproject.util;
 
 import java.util.List;
 

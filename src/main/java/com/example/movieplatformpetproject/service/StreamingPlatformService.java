@@ -1,8 +1,7 @@
 package com.example.movieplatformpetproject.service;
 
-import com.example.movieplatformpetproject.api.streamingplatform.StreamingPlatformNotFoundException;
-import com.example.movieplatformpetproject.api.streamingplatform.StreamingPlatformValidator;
 import com.example.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformInputDto;
+import com.example.movieplatformpetproject.config.exceptions.StreamingPlatformNotFoundException;
 import com.example.movieplatformpetproject.model.StreamingPlatform;
 import com.example.movieplatformpetproject.repository.StreamingPlatformRepository;
 import lombok.RequiredArgsConstructor;
