@@ -6,9 +6,10 @@ import com.example.movieplatformpetproject.api.streamingplatform.dto.StreamingPl
 import com.example.movieplatformpetproject.model.StreamingPlatform;
 import com.example.movieplatformpetproject.service.StreamingPlatformService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,11 +27,12 @@ public class StreamingPlatformRestController {
     }
 
     @GetMapping
-    public List<StreamingPlatformOutputDto> getAll() {
-        return streamingPlatformService.getAll()
-                .stream()
-                .map(streamingPlatformOutputConverter::convert)
-                .toList();
+    public Page<StreamingPlatformOutputDto> getAll(@RequestParam(defaultValue = "0", required = false) Integer page,
+                                                   @RequestParam(defaultValue = "3", required = false) Integer size,
+                                                   @RequestParam(defaultValue = "name", required = false) String sort,
+                                                   @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction) {
+        return streamingPlatformService.getAll(page, size, sort, direction)
+                .map(streamingPlatformOutputConverter::convert);
     }
 
     @GetMapping("/{id}")
