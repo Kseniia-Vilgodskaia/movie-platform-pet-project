@@ -1,6 +1,6 @@
 package com.vilgodskaia.movieplatformpetproject.service;
 
-import com.vilgodskaia.movieplatformpetproject.config.exceptions.StreamingPlatformValidationException;
+import com.vilgodskaia.movieplatformpetproject.config.exceptions.ValidationException;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.repository.StreamingPlatformRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class StreamingPlatformValidator {
         }
 
         if (!errorMessages.isEmpty()) {
-            throw new StreamingPlatformValidationException(errorMessages);
+            throw new ValidationException(errorMessages);
         }
     }
 }
