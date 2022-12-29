@@ -29,6 +29,6 @@ public class StreamingPlatform {
     /**
      * Name
      */
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 }
