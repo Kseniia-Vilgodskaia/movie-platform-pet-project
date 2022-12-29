@@ -8,5 +8,7 @@ CREATE TABLE movie_on_streaming_platform
     price_for_buying          integer,
     available_until           date,
     UNIQUE (movie_id, streaming_platform_id),
-    CHECK ( available_for_buying OR available_in_subscription )
+    CHECK ( available_for_buying OR available_in_subscription ),
+    CONSTRAINT fk_movie FOREIGN KEY (movie_id) REFERENCES movie (id),
+    CONSTRAINT fk_streaming_platform FOREIGN KEY (streaming_platform_id) REFERENCES streaming_platform (id)
 )
