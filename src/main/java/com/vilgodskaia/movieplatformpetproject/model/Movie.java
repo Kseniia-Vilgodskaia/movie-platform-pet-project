@@ -10,7 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "movie")
+@Table(name = "movie",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"title", "year", "director"}))
 @Accessors(chain = true)
 @Getter
 @Setter

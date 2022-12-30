@@ -10,7 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "streaming_platform")
+@Table(name = "streaming_platform",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 @Accessors(chain = true)
 @Getter
 @Setter
@@ -29,6 +30,6 @@ public class StreamingPlatform {
     /**
      * Name
      */
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 }
