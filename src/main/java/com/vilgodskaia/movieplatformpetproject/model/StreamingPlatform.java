@@ -10,7 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "streaming_platform")
+@Table(name = "streaming_platform",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 @Accessors(chain = true)
 @Getter
 @Setter

@@ -11,7 +11,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "movie_on_streaming_platform")
+@Table(name = "movie_on_streaming_platform",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"movie_id", "streaming_platform_id"}))
 @Accessors(chain = true)
 @Getter
 @Setter
@@ -31,14 +32,14 @@ public class MovieOnStreamingPlatform {
      * Movie
      */
     @ManyToOne
-    @JoinColumn(name = "movie_id")
+    @JoinColumn(name = "movie_id", nullable = false, foreignKey = @ForeignKey(name = "FK_movie_on_streaming_platform_movie"))
     private Movie movie;
 
     /**
      * Streaming platform
      */
     @ManyToOne
-    @JoinColumn(name = "streaming_platform_id")
+    @JoinColumn(name = "streaming_platform_id", nullable = false, foreignKey = @ForeignKey(name = "FK_movie_on_streaming_platform_streaming_platform"))
     private StreamingPlatform streamingPlatform;
 
     /**
