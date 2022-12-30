@@ -1,17 +1,19 @@
 package com.vilgodskaia.movieplatformpetproject.service;
 
-import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieValidationException;
+import com.vilgodskaia.movieplatformpetproject.config.exceptions.ValidationException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.model.MovieGenre;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.vilgodskaia.movieplatformpetproject.util.ValidationTestsUtil.checkFieldValidationSingleError;
 import static com.vilgodskaia.movieplatformpetproject.util.ValidationUtil.FIELD_EMPTY_POSTFIX;
 import static com.vilgodskaia.movieplatformpetproject.util.ValidationUtil.FIELD_NULL_POSTFIX;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +23,7 @@ class MovieValidatorTest {
     private Movie movie;
     private final MovieRepository movieRepositoryMock = Mockito.mock(MovieRepository.class);
     private final MovieValidator movieValidator = new MovieValidator(movieRepositoryMock);
+    private final Executable movieValidationExecutable = () -> movieValidator.validate(movie);
 
     @BeforeEach
     void setUp() {
@@ -43,69 +46,60 @@ class MovieValidatorTest {
     @Test
     void should_ThrowMovieValidationExceptionForTitleNullField_when_TitleNull() {
         movie.setTitle(null);
-        String expectedErrorMessage = "Title" + FIELD_NULL_POSTFIX;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError("Title" + FIELD_NULL_POSTFIX, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForTitleEmptyField_when_TitleEmpty() {
         movie.setTitle("");
-        String expectedErrorMessage = "Title" + FIELD_EMPTY_POSTFIX;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError("Title" + FIELD_EMPTY_POSTFIX, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForYearNullField_when_YearNull() {
         movie.setYear(null);
-        String expectedErrorMessage = "Year" + FIELD_NULL_POSTFIX;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError("Year" + FIELD_NULL_POSTFIX, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForYearNotCorrectField_when_YearLessThan1895() {
         movie.setYear(1232);
-        String expectedErrorMessage = MovieValidator.YEAR_NOT_VALID;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError(MovieValidator.YEAR_NOT_VALID, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForGenreNullField_when_GenreNull() {
         movie.setGenre(null);
-        String expectedErrorMessage = "Genre" + FIELD_NULL_POSTFIX;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError("Genre" + FIELD_NULL_POSTFIX, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDurationNullField_when_DurationNull() {
         movie.setDuration(null);
-        String expectedErrorMessage = "Duration" + FIELD_NULL_POSTFIX;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError("Duration" + FIELD_NULL_POSTFIX, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDurationNotCorrectField_when_DurationLessThanOrEqualTo0() {
         movie.setDuration(-12);
-        String expectedErrorMessage = MovieValidator.DURATION_NOT_VALID;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError(MovieValidator.DURATION_NOT_VALID, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDirectorNullField_when_DirectorNull() {
         movie.setDirector(null);
-        String expectedErrorMessage = "Director" + FIELD_NULL_POSTFIX;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError("Director" + FIELD_NULL_POSTFIX, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForDirectorEmptyField_when_DirectorEmpty() {
         movie.setDirector("");
-        String expectedErrorMessage = "Director" + FIELD_EMPTY_POSTFIX;
-        checkFieldValidationSingleError(expectedErrorMessage);
+        checkFieldValidationSingleError("Director" + FIELD_EMPTY_POSTFIX, movieValidationExecutable);
     }
 
     @Test
     void should_ThrowMovieValidationExceptionForNotUniqueMovie_when_AnotherMovieWithTitleAndYearAndDirectorExistsInDb() {
-        Movie storedMovie = new Movie()
+        Movie anotherMovie = new Movie()
                 .setId(UUID.randomUUID())
                 .setTitle(movie.getTitle())
                 .setYear(movie.getYear())
@@ -114,16 +108,8 @@ class MovieValidatorTest {
                 .setDirector(movie.getDirector());
 
         Mockito.when(movieRepositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
-                .thenReturn(Optional.of(storedMovie));
-        assertAll(
-                () -> assertNotEquals(movie.getId(), storedMovie.getId()),
-                () -> assertEquals(storedMovie.getTitle(), movie.getTitle()),
-                () -> assertEquals(storedMovie.getYear(), movie.getYear()),
-                () -> assertEquals(storedMovie.getDirector(), movie.getDirector())
-        );
-
-        String expectedErrorMessage = MovieValidator.MOVIE_NOT_UNIQUE;
-        checkFieldValidationSingleError(expectedErrorMessage);
+                .thenReturn(Optional.of(anotherMovie));
+        checkFieldValidationSingleError(MovieValidator.MOVIE_NOT_UNIQUE, movieValidationExecutable);
     }
 
     @Test
@@ -140,19 +126,11 @@ class MovieValidatorTest {
         List<String> expectedErrorMessages = List.of(
                 MovieValidator.YEAR_NOT_VALID,
                 MovieValidator.DURATION_NOT_VALID);
-        MovieValidationException exception = assertThrows(MovieValidationException.class, () -> movieValidator.validate(movie));
+        ValidationException exception = assertThrows(ValidationException.class, () -> movieValidator.validate(movie));
         assertAll(
                 () -> assertEquals(expectedErrorMessages.size(), exception.getValidationErrors().size()),
                 () -> assertTrue(exception.getValidationErrors().containsAll(expectedErrorMessages))
         );
 
-    }
-
-    private void checkFieldValidationSingleError(String expectedErrorMessage) {
-        MovieValidationException exception = assertThrows(MovieValidationException.class, () -> movieValidator.validate(movie));
-        assertAll(
-                () -> assertEquals(1, exception.getValidationErrors().size()),
-                () -> assertEquals(expectedErrorMessage, exception.getValidationErrors().get(0))
-        );
     }
 }

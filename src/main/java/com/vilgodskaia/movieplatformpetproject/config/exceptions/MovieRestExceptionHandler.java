@@ -17,7 +17,7 @@ public class MovieRestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<CustomErrorResponse> handleException(MovieValidationException exception) {
+    public ResponseEntity<CustomErrorResponse> handleException(ValidationException exception) {
         return new ResponseEntity<>(new CustomErrorResponse(exception.getValidationErrors()),
                 HttpStatus.CONFLICT);
     }

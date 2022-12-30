@@ -7,6 +7,6 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
-public class StreamingPlatformValidationException extends RuntimeException {
-    private final List<String> errorMessages;
+public class ValidationException extends RuntimeException {
+    private final List<String> validationErrors;
 }

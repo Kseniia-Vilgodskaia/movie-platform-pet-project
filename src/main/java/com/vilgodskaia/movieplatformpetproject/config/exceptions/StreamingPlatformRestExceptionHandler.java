@@ -16,7 +16,7 @@ public class StreamingPlatformRestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<CustomErrorResponse> handleException(StreamingPlatformValidationException exception) {
-        return new ResponseEntity<>(new CustomErrorResponse(exception.getErrorMessages()), HttpStatus.CONFLICT);
+    public ResponseEntity<CustomErrorResponse> handleException(ValidationException exception) {
+        return new ResponseEntity<>(new CustomErrorResponse(exception.getValidationErrors()), HttpStatus.CONFLICT);
     }
 }

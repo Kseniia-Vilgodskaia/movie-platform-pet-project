@@ -1,6 +1,6 @@
 package com.vilgodskaia.movieplatformpetproject.service;
 
-import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieValidationException;
+import com.vilgodskaia.movieplatformpetproject.config.exceptions.ValidationException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +58,7 @@ public class MovieValidator {
 
         //In case there is at least one invalid field throw a validation exception
         if (!validationErrors.isEmpty()) {
-            throw new MovieValidationException(validationErrors);
+            throw new ValidationException(validationErrors);
         }
     }
 }
