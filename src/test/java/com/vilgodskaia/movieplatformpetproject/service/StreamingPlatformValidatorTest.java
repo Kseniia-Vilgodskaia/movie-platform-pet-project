@@ -13,7 +13,7 @@ import java.util.UUID;
 import static com.vilgodskaia.movieplatformpetproject.util.ValidationTestsUtil.checkFieldValidationSingleError;
 import static com.vilgodskaia.movieplatformpetproject.util.ValidationUtil.FIELD_EMPTY_POSTFIX;
 import static com.vilgodskaia.movieplatformpetproject.util.ValidationUtil.FIELD_NULL_POSTFIX;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class StreamingPlatformValidatorTest {
     private StreamingPlatform streamingPlatform;
@@ -54,10 +54,6 @@ class StreamingPlatformValidatorTest {
                 .setName(streamingPlatform.getName());
         Mockito.when(streamingPlatformRepository.findByName(streamingPlatform.getName()))
                 .thenReturn(Optional.of(anotherStreamingPlatform));
-        assertAll(
-                () -> assertNotEquals(anotherStreamingPlatform.getId(), streamingPlatform.getId()),
-                () -> assertEquals(anotherStreamingPlatform.getName(), streamingPlatform.getName())
-        );
         checkFieldValidationSingleError(StreamingPlatformValidator.STREAMING_PLATFORM_NOT_UNIQUE, streamingPlatformExecutable);
     }
 

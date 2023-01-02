@@ -109,13 +109,6 @@ class MovieValidatorTest {
 
         Mockito.when(movieRepositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
                 .thenReturn(Optional.of(anotherMovie));
-        assertAll(
-                () -> assertNotEquals(movie.getId(), anotherMovie.getId()),
-                () -> assertEquals(anotherMovie.getTitle(), movie.getTitle()),
-                () -> assertEquals(anotherMovie.getYear(), movie.getYear()),
-                () -> assertEquals(anotherMovie.getDirector(), movie.getDirector())
-        );
-
         checkFieldValidationSingleError(MovieValidator.MOVIE_NOT_UNIQUE, movieValidationExecutable);
     }
 
