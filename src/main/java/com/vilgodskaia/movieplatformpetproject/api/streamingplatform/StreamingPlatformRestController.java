@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static com.vilgodskaia.movieplatformpetproject.util.PaginationUtil.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/streamings")
@@ -27,10 +29,10 @@ public class StreamingPlatformRestController {
     }
 
     @GetMapping
-    public Page<StreamingPlatformOutputDto> getPage(@RequestParam(defaultValue = "0", required = false) Integer page,
-                                                    @RequestParam(defaultValue = "3", required = false) Integer size,
+    public Page<StreamingPlatformOutputDto> getPage(@RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
+                                                    @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size,
                                                     @RequestParam(defaultValue = "name", required = false) String sort,
-                                                    @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction) {
+                                                    @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION, required = false) Sort.Direction direction) {
         return streamingPlatformService.getPage(page, size, sort, direction)
                 .map(streamingPlatformOutputConverter::convert);
     }
