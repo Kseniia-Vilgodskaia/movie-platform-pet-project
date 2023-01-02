@@ -2,6 +2,7 @@ package com.vilgodskaia.movieplatformpetproject.service;
 
 import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformCreateInputDto;
 import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformUpdateInputDto;
+import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieOnStreamingPlatformNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.model.MovieOnStreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MovieOnStreamingPlatformService {
     private final MovieOnStreamingPlatformRepository movieOnStreamingPlatformRepository;
+    private final MovieOnStreamingPlatformValidator movieOnStreamingPlatformValidator;
     private final MovieService movieService;
     private final StreamingPlatformService streamingPlatformService;
 
@@ -35,6 +37,7 @@ public class MovieOnStreamingPlatformService {
                 .setAvailableInSubscription(movieOnStreamingPlatformCreateInputDto.isAvailableInSubscription())
                 .setPriceForBuying(movieOnStreamingPlatformCreateInputDto.getPriceForBuying())
                 .setAvailableUntil(movieOnStreamingPlatformCreateInputDto.getAvailableUntil());
+        movieOnStreamingPlatformValidator.validateForCreating(movieOnStreamingPlatform);
         return movieOnStreamingPlatformRepository.save(movieOnStreamingPlatform);
     }
 
@@ -54,7 +57,7 @@ public class MovieOnStreamingPlatformService {
      * @return - found relation
      */
     public MovieOnStreamingPlatform get(UUID id) {
-        return movieOnStreamingPlatformRepository.findById(id).orElseThrow();
+        return movieOnStreamingPlatformRepository.findById(id).orElseThrow(() -> new MovieOnStreamingPlatformNotFoundException(id));
     }
 
     /**
@@ -70,6 +73,7 @@ public class MovieOnStreamingPlatformService {
                 .setAvailableInSubscription(movieOnStreamingPlatformUpdateInputDto.isAvailableInSubscription())
                 .setPriceForBuying(movieOnStreamingPlatformUpdateInputDto.getPriceForBuying())
                 .setAvailableUntil(movieOnStreamingPlatformUpdateInputDto.getAvailableUntil());
+        movieOnStreamingPlatformValidator.validateForUpdating(movieOnStreamingPlatform);
         return movieOnStreamingPlatformRepository.save(movieOnStreamingPlatform);
     }
 
