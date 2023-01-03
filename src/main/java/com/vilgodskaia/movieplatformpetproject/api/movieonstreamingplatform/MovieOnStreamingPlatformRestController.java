@@ -1,9 +1,9 @@
 package com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform;
 
-import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformCreateInputDto;
+import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformCreateDto;
 import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformOutputDto;
 import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformOutputDtoConverter;
-import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformUpdateInputDto;
+import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformUpdateDto;
 import com.vilgodskaia.movieplatformpetproject.model.MovieOnStreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.service.MovieOnStreamingPlatformService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ public class MovieOnStreamingPlatformRestController {
     private final MovieOnStreamingPlatformOutputDtoConverter movieOnStreamingPlatformOutputDtoConverter;
 
     @PostMapping
-    public MovieOnStreamingPlatformOutputDto create(@RequestBody MovieOnStreamingPlatformCreateInputDto movieOnStreamingPlatformCreateInputDto) {
-        MovieOnStreamingPlatform movieOnStreamingPlatform = movieOnStreamingPlatformService.create(movieOnStreamingPlatformCreateInputDto);
+    public MovieOnStreamingPlatformOutputDto create(@RequestBody MovieOnStreamingPlatformCreateDto movieOnStreamingPlatformCreateDto) {
+        MovieOnStreamingPlatform movieOnStreamingPlatform = movieOnStreamingPlatformService.create(movieOnStreamingPlatformCreateDto);
         return movieOnStreamingPlatformOutputDtoConverter.convert(movieOnStreamingPlatform);
     }
 
@@ -42,8 +42,8 @@ public class MovieOnStreamingPlatformRestController {
     }
 
     @PutMapping("/{id}")
-    public MovieOnStreamingPlatformOutputDto update(@PathVariable UUID id, @RequestBody MovieOnStreamingPlatformUpdateInputDto movieOnStreamingPlatformUpdateInputDto) {
-        MovieOnStreamingPlatform movieOnStreamingPlatform = movieOnStreamingPlatformService.update(id, movieOnStreamingPlatformUpdateInputDto);
+    public MovieOnStreamingPlatformOutputDto update(@PathVariable UUID id, @RequestBody MovieOnStreamingPlatformUpdateDto movieOnStreamingPlatformUpdateDto) {
+        MovieOnStreamingPlatform movieOnStreamingPlatform = movieOnStreamingPlatformService.update(id, movieOnStreamingPlatformUpdateDto);
         return movieOnStreamingPlatformOutputDtoConverter.convert(movieOnStreamingPlatform);
     }
 

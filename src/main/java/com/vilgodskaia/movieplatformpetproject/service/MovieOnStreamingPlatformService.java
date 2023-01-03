@@ -1,7 +1,7 @@
 package com.vilgodskaia.movieplatformpetproject.service;
 
-import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformCreateInputDto;
-import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformUpdateInputDto;
+import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformCreateDto;
+import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformUpdateDto;
 import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieOnStreamingPlatformNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.model.MovieOnStreamingPlatform;
@@ -24,19 +24,19 @@ public class MovieOnStreamingPlatformService {
     /**
      * Create a new relation between a movie and a streaming platform
      *
-     * @param movieOnStreamingPlatformCreateInputDto - MovieOnStreamingPlatformInputDto of the relation with Movie ID and Streaming Platform ID
+     * @param movieOnStreamingPlatformCreateDto - MovieOnStreamingPlatformCreateDto of the relation with Movie ID and Streaming Platform ID
      * @return - MovieOnStreamingPlatform of the created relation
      */
-    public MovieOnStreamingPlatform create(MovieOnStreamingPlatformCreateInputDto movieOnStreamingPlatformCreateInputDto) {
-        Movie movie = movieService.get(movieOnStreamingPlatformCreateInputDto.getMovieId());
-        StreamingPlatform streamingPlatform = streamingPlatformService.get(movieOnStreamingPlatformCreateInputDto.getStreamingPlatformId());
+    public MovieOnStreamingPlatform create(MovieOnStreamingPlatformCreateDto movieOnStreamingPlatformCreateDto) {
+        Movie movie = movieService.get(movieOnStreamingPlatformCreateDto.getMovieId());
+        StreamingPlatform streamingPlatform = streamingPlatformService.get(movieOnStreamingPlatformCreateDto.getStreamingPlatformId());
         MovieOnStreamingPlatform movieOnStreamingPlatform = new MovieOnStreamingPlatform()
                 .setMovie(movie)
                 .setStreamingPlatform(streamingPlatform)
-                .setAvailableForBuying(movieOnStreamingPlatformCreateInputDto.isAvailableForBuying())
-                .setAvailableInSubscription(movieOnStreamingPlatformCreateInputDto.isAvailableInSubscription())
-                .setPriceForBuying(movieOnStreamingPlatformCreateInputDto.getPriceForBuying())
-                .setAvailableUntil(movieOnStreamingPlatformCreateInputDto.getAvailableUntil());
+                .setAvailableForBuying(movieOnStreamingPlatformCreateDto.isAvailableForBuying())
+                .setAvailableInSubscription(movieOnStreamingPlatformCreateDto.isAvailableInSubscription())
+                .setPriceForBuying(movieOnStreamingPlatformCreateDto.getPriceForBuying())
+                .setAvailableUntil(movieOnStreamingPlatformCreateDto.getAvailableUntil());
         movieOnStreamingPlatformValidator.validateForCreating(movieOnStreamingPlatform);
         return movieOnStreamingPlatformRepository.save(movieOnStreamingPlatform);
     }
@@ -63,16 +63,16 @@ public class MovieOnStreamingPlatformService {
     /**
      * Update an existing relation between a movie and a streaming platform by ID
      *
-     * @param id                                     - ID of the relation
-     * @param movieOnStreamingPlatformUpdateInputDto - MovieOnStreamingPlatformUpdateInputDto with new data for the relation
+     * @param id                                - ID of the relation
+     * @param movieOnStreamingPlatformUpdateDto - MovieOnStreamingPlatformUpdateDto with new data for the relation
      * @return - updated relation
      */
-    public MovieOnStreamingPlatform update(UUID id, MovieOnStreamingPlatformUpdateInputDto movieOnStreamingPlatformUpdateInputDto) {
+    public MovieOnStreamingPlatform update(UUID id, MovieOnStreamingPlatformUpdateDto movieOnStreamingPlatformUpdateDto) {
         MovieOnStreamingPlatform movieOnStreamingPlatform = get(id)
-                .setAvailableForBuying(movieOnStreamingPlatformUpdateInputDto.isAvailableForBuying())
-                .setAvailableInSubscription(movieOnStreamingPlatformUpdateInputDto.isAvailableInSubscription())
-                .setPriceForBuying(movieOnStreamingPlatformUpdateInputDto.getPriceForBuying())
-                .setAvailableUntil(movieOnStreamingPlatformUpdateInputDto.getAvailableUntil());
+                .setAvailableForBuying(movieOnStreamingPlatformUpdateDto.isAvailableForBuying())
+                .setAvailableInSubscription(movieOnStreamingPlatformUpdateDto.isAvailableInSubscription())
+                .setPriceForBuying(movieOnStreamingPlatformUpdateDto.getPriceForBuying())
+                .setAvailableUntil(movieOnStreamingPlatformUpdateDto.getAvailableUntil());
         movieOnStreamingPlatformValidator.validateForUpdating(movieOnStreamingPlatform);
         return movieOnStreamingPlatformRepository.save(movieOnStreamingPlatform);
     }
