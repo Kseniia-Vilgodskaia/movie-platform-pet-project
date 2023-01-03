@@ -4,6 +4,7 @@ import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.model.MovieGenre;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
@@ -98,13 +99,12 @@ class MovieValidatorTest {
     }
 
     @Test
-    void should_ThrowValidationExceptionForNotUniqueMovie_when_AnotherMovieWithTitleAndYearAndDirectorExistsInDb() {
+    @DisplayName("Should throw a validation exception for not unique movie when there is another movie with these title, year and director")
+    void should_ThrowValidationExceptionForNotUniqueMovie_when_MovieNotUnique() {
         Movie anotherMovie = new Movie()
                 .setId(UUID.randomUUID())
                 .setTitle(movie.getTitle())
                 .setYear(movie.getYear())
-                .setGenre(MovieGenre.DRAMA)
-                .setDuration(120)
                 .setDirector(movie.getDirector());
 
         Mockito.when(repositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))

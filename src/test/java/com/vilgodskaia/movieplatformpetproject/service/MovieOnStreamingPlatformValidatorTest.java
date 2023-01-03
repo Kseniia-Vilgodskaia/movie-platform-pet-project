@@ -5,6 +5,7 @@ import com.vilgodskaia.movieplatformpetproject.model.MovieOnStreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieOnStreamingPlatformRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -66,13 +67,12 @@ class MovieOnStreamingPlatformValidatorTest {
         }
 
         @Test
-        void should_ThrowValidationExceptionForForNotUniqueRelation_when_AnotherRelationWithTheseMovieAndStreamingPlatformExists() {
+        @DisplayName("Should throw a validation exception for not unique relation when there is another relation with these movie and streaming platform")
+        void should_ThrowValidationExceptionForNotUniqueRelation_when_RelationNotUnique() {
             MovieOnStreamingPlatform anotherMovieOnStreamingPlatform = new MovieOnStreamingPlatform()
                     .setId(UUID.randomUUID())
                     .setMovie(movieOnStreamingPlatform.getMovie())
-                    .setStreamingPlatform(movieOnStreamingPlatform.getStreamingPlatform())
-                    .setAvailableForBuying(false)
-                    .setAvailableInSubscription(true);
+                    .setStreamingPlatform(movieOnStreamingPlatform.getStreamingPlatform());
             Mockito.when(repositoryMock.findByMovieAndStreamingPlatform(movieOnStreamingPlatform.getMovie(), movieOnStreamingPlatform.getStreamingPlatform()))
                     .thenReturn(Optional.of(anotherMovieOnStreamingPlatform));
             validateFieldSingleError(MovieOnStreamingPlatformValidator.RELATION_NOT_UNIQUE, createExecutable);
@@ -80,7 +80,8 @@ class MovieOnStreamingPlatformValidatorTest {
 
 
         @Test
-        void should_ThrowValidationExceptionForNotAvailableMovie_when_AvailableForBuyingAndAvailableInSubscriptionFalse() {
+        @DisplayName("Should throw a validation exception for not available movie if both fields availableForBuying and availableInSubscription are FALSE")
+        void should_ThrowValidationExceptionForNotAvailableMovie_when_MovieNotAvailable() {
             movieOnStreamingPlatform
                     .setAvailableForBuying(false)
                     .setAvailableInSubscription(false);
@@ -100,7 +101,8 @@ class MovieOnStreamingPlatformValidatorTest {
         }
 
         @Test
-        void should_ThrowValidationExceptionForNullMovieAndNotValidPrice_when_MovieNullAndPriceForBuyingLowerThan0() {
+        @DisplayName("should throw validation exception with list of errors when a movie is null and buying price is lower than 0")
+        void should_ThrowValidationExceptionWithListOfErrors_when_MultipleFieldsNotValid() {
             movieOnStreamingPlatform
                     .setMovie(null)
                     .setPriceForBuying(-100);
@@ -120,7 +122,8 @@ class MovieOnStreamingPlatformValidatorTest {
         }
 
         @Test
-        void should_ThrowValidationExceptionForNotAvailableMovie_when_AvailableForBuyingAndAvailableInSubscriptionFalse() {
+        @DisplayName("Should throw a validation exception for not available movie if both fields availableForBuying and availableInSubscription are FALSE")
+        void should_ThrowValidationExceptionForNotAvailableMovie_when_MovieNotAvailable() {
             movieOnStreamingPlatform
                     .setAvailableForBuying(false)
                     .setAvailableInSubscription(false);
@@ -140,7 +143,8 @@ class MovieOnStreamingPlatformValidatorTest {
         }
 
         @Test
-        void should_ThrowValidationExceptionForNotAvailableMovieAndNotValidAvailableUntilDate_when_AvailableForBuyingAndAvailableInSubscriptionFalse_and_AvailableUntilDateInThePast() {
+        @DisplayName("should throw validation exception with list of errors when a movie is not available anywhere and expiry date is not valid")
+        void should_ThrowValidationExceptionWithListOfErrors_when_MultipleFieldsNotValid() {
             movieOnStreamingPlatform
                     .setAvailableForBuying(false)
                     .setAvailableInSubscription(false)

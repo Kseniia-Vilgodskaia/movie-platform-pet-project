@@ -3,6 +3,7 @@ package com.vilgodskaia.movieplatformpetproject.service;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.repository.StreamingPlatformRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
@@ -48,7 +49,8 @@ class StreamingPlatformValidatorTest {
     }
 
     @Test
-    void should_ThrowValidationExceptionForNotUniqueStreamingPlatform_when_AnotherStreamingPlatformWithNameExistsInDb() {
+    @DisplayName("Should throw a validation exception for not unique streaming platform when there is another streaming platform with this name")
+    void should_ThrowValidationExceptionForNotUniqueStreamingPlatform_when_StreamingPlatformNotUnique() {
         StreamingPlatform anotherStreamingPlatform = new StreamingPlatform()
                 .setId(UUID.randomUUID())
                 .setName(streamingPlatform.getName());
