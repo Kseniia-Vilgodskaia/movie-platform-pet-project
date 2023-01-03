@@ -1,10 +1,10 @@
 package com.vilgodskaia.movieplatformpetproject.service;
 
-import com.vilgodskaia.movieplatformpetproject.config.exceptions.ValidationException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.model.MovieGenre;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
@@ -13,17 +13,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.vilgodskaia.movieplatformpetproject.util.ValidationTestsUtil.checkFieldValidationSingleError;
+import static com.vilgodskaia.movieplatformpetproject.util.ValidationTestsUtil.validateFieldMultipleErrors;
+import static com.vilgodskaia.movieplatformpetproject.util.ValidationTestsUtil.validateFieldSingleError;
 import static com.vilgodskaia.movieplatformpetproject.util.ValidationUtil.FIELD_EMPTY_POSTFIX;
 import static com.vilgodskaia.movieplatformpetproject.util.ValidationUtil.FIELD_NULL_POSTFIX;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class MovieValidatorTest {
 
     private Movie movie;
-    private final MovieRepository movieRepositoryMock = Mockito.mock(MovieRepository.class);
-    private final MovieValidator movieValidator = new MovieValidator(movieRepositoryMock);
-    private final Executable movieValidationExecutable = () -> movieValidator.validate(movie);
+    private final MovieRepository repositoryMock = Mockito.mock(MovieRepository.class);
+    private final MovieValidator validator = new MovieValidator(repositoryMock);
+    private final Executable executable = () -> validator.validate(movie);
 
     @BeforeEach
     void setUp() {
@@ -34,103 +35,97 @@ class MovieValidatorTest {
                 .setGenre(MovieGenre.ROMANCE)
                 .setDuration(116)
                 .setDirector("Donald Petrie");
-        Mockito.when(movieRepositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
+        Mockito.when(repositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
                 .thenReturn(Optional.empty());
     }
 
     @Test
-    void should_NotThrowMovieValidationException_when_CorrectUniqueMovie() {
-        assertDoesNotThrow(() -> movieValidator.validate(movie));
+    void should_NotThrowValidationException_when_CorrectUniqueMovie() {
+        assertDoesNotThrow(() -> validator.validate(movie));
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForTitleNullField_when_TitleNull() {
+    void should_ThrowValidationExceptionForTitleNullField_when_TitleNull() {
         movie.setTitle(null);
-        checkFieldValidationSingleError("Title" + FIELD_NULL_POSTFIX, movieValidationExecutable);
+        validateFieldSingleError("Title" + FIELD_NULL_POSTFIX, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForTitleEmptyField_when_TitleEmpty() {
+    void should_ThrowValidationExceptionForTitleEmptyField_when_TitleEmpty() {
         movie.setTitle("");
-        checkFieldValidationSingleError("Title" + FIELD_EMPTY_POSTFIX, movieValidationExecutable);
+        validateFieldSingleError("Title" + FIELD_EMPTY_POSTFIX, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForYearNullField_when_YearNull() {
+    void should_ThrowValidationExceptionForYearNullField_when_YearNull() {
         movie.setYear(null);
-        checkFieldValidationSingleError("Year" + FIELD_NULL_POSTFIX, movieValidationExecutable);
+        validateFieldSingleError("Year" + FIELD_NULL_POSTFIX, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForYearNotCorrectField_when_YearLessThan1895() {
+    void should_ThrowValidationExceptionForYearNotCorrectField_when_YearLessThan1895() {
         movie.setYear(1232);
-        checkFieldValidationSingleError(MovieValidator.YEAR_NOT_VALID, movieValidationExecutable);
+        validateFieldSingleError(MovieValidator.YEAR_NOT_VALID, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForGenreNullField_when_GenreNull() {
+    void should_ThrowValidationExceptionForGenreNullField_when_GenreNull() {
         movie.setGenre(null);
-        checkFieldValidationSingleError("Genre" + FIELD_NULL_POSTFIX, movieValidationExecutable);
+        validateFieldSingleError("Genre" + FIELD_NULL_POSTFIX, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForDurationNullField_when_DurationNull() {
+    void should_ThrowValidationExceptionForDurationNullField_when_DurationNull() {
         movie.setDuration(null);
-        checkFieldValidationSingleError("Duration" + FIELD_NULL_POSTFIX, movieValidationExecutable);
+        validateFieldSingleError("Duration" + FIELD_NULL_POSTFIX, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForDurationNotCorrectField_when_DurationLessThanOrEqualTo0() {
+    void should_ThrowValidationExceptionForDurationNotCorrectField_when_DurationLessThanOrEqualTo0() {
         movie.setDuration(-12);
-        checkFieldValidationSingleError(MovieValidator.DURATION_NOT_VALID, movieValidationExecutable);
+        validateFieldSingleError(MovieValidator.DURATION_NOT_VALID, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForDirectorNullField_when_DirectorNull() {
+    void should_ThrowValidationExceptionForDirectorNullField_when_DirectorNull() {
         movie.setDirector(null);
-        checkFieldValidationSingleError("Director" + FIELD_NULL_POSTFIX, movieValidationExecutable);
+        validateFieldSingleError("Director" + FIELD_NULL_POSTFIX, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForDirectorEmptyField_when_DirectorEmpty() {
+    void should_ThrowValidationExceptionForDirectorEmptyField_when_DirectorEmpty() {
         movie.setDirector("");
-        checkFieldValidationSingleError("Director" + FIELD_EMPTY_POSTFIX, movieValidationExecutable);
+        validateFieldSingleError("Director" + FIELD_EMPTY_POSTFIX, executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForNotUniqueMovie_when_AnotherMovieWithTitleAndYearAndDirectorExistsInDb() {
+    @DisplayName("Should throw a validation exception for not unique movie when there is another movie with these title, year and director")
+    void should_ThrowValidationExceptionForNotUniqueMovie_when_MovieNotUnique() {
         Movie anotherMovie = new Movie()
                 .setId(UUID.randomUUID())
                 .setTitle(movie.getTitle())
                 .setYear(movie.getYear())
-                .setGenre(MovieGenre.DRAMA)
-                .setDuration(120)
                 .setDirector(movie.getDirector());
 
-        Mockito.when(movieRepositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
+        Mockito.when(repositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
                 .thenReturn(Optional.of(anotherMovie));
-        checkFieldValidationSingleError(MovieValidator.MOVIE_NOT_UNIQUE, movieValidationExecutable);
+        validateFieldSingleError(MovieValidator.MOVIE_NOT_UNIQUE, executable);
     }
 
     @Test
-    void should_NotThrowMovieValidationException_when_ChangingExistingMovie() {
-        Mockito.when(movieRepositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
+    void should_NotThrowValidationException_when_ChangingExistingMovie() {
+        Mockito.when(repositoryMock.findByTitleAndYearAndDirector(movie.getTitle(), movie.getYear(), movie.getDirector()))
                 .thenReturn(Optional.of(movie));
-        assertDoesNotThrow(() -> movieValidator.validate(movie));
+        assertDoesNotThrow(executable);
     }
 
     @Test
-    void should_ThrowMovieValidationExceptionForYearAndDurationFields_when_NotCorrectYearAndDuration() {
+    void should_ThrowValidationExceptionForYearAndDurationFields_when_NotCorrectYearAndDuration() {
         movie.setYear(1036);
         movie.setDuration(0);
         List<String> expectedErrorMessages = List.of(
                 MovieValidator.YEAR_NOT_VALID,
                 MovieValidator.DURATION_NOT_VALID);
-        ValidationException exception = assertThrows(ValidationException.class, () -> movieValidator.validate(movie));
-        assertAll(
-                () -> assertEquals(expectedErrorMessages.size(), exception.getValidationErrors().size()),
-                () -> assertTrue(exception.getValidationErrors().containsAll(expectedErrorMessages))
-        );
-
+        validateFieldMultipleErrors(expectedErrorMessages, executable);
     }
 }
