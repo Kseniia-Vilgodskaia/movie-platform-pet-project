@@ -8,9 +8,11 @@ import com.vilgodskaia.movieplatformpetproject.model.MovieOnStreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieOnStreamingPlatformRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -42,12 +44,12 @@ public class MovieOnStreamingPlatformService {
     }
 
     /**
-     * Get all relations between movies and streaming platforms
+     * Get a page of relations between movies and streaming platforms
      *
-     * @return - the list of relations
+     * @return - a page of relations
      */
-    public List<MovieOnStreamingPlatform> getAll() {
-        return movieOnStreamingPlatformRepository.findAll();
+    public Page<MovieOnStreamingPlatform> getPage(Integer page, Integer size, String sort, Sort.Direction direction) {
+        return movieOnStreamingPlatformRepository.findAll(PageRequest.of(page, size, direction, sort.split(",")));
     }
 
     /**

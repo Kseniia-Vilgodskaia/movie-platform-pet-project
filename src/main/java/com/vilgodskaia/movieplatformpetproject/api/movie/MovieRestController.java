@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static com.vilgodskaia.movieplatformpetproject.util.PaginationUtil.*;
+
 @RestController
 @RequestMapping("/movies")
 @RequiredArgsConstructor
@@ -28,10 +30,10 @@ public class MovieRestController {
     }
 
     @GetMapping
-    public Page<MovieOutputDto> getPage(@RequestParam(defaultValue = "0", required = false) Integer page,
-                                        @RequestParam(defaultValue = "5", required = false) Integer size,
+    public Page<MovieOutputDto> getPage(@RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
+                                        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size,
                                         @RequestParam(defaultValue = "year", required = false) String sort,
-                                        @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction) {
+                                        @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION, required = false) Sort.Direction direction) {
         Page<Movie> movies = movieService.getPage(page, size, sort, direction);
         return movies.map(movieOutputDtoConverter::convert);
     }

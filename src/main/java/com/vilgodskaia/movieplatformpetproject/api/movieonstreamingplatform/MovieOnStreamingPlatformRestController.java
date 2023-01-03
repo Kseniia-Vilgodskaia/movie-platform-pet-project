@@ -7,10 +7,13 @@ import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.
 import com.vilgodskaia.movieplatformpetproject.model.MovieOnStreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.service.MovieOnStreamingPlatformService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
+
+import static com.vilgodskaia.movieplatformpetproject.util.PaginationUtil.*;
 
 @RestController
 @RequestMapping("/movie-on-streamings")
@@ -27,12 +30,13 @@ public class MovieOnStreamingPlatformRestController {
     }
 
     @GetMapping
-    public List<MovieOnStreamingPlatformOutputDto> getAll() {
+    public Page<MovieOnStreamingPlatformOutputDto> getPage(@RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
+                                                           @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size,
+                                                           @RequestParam(defaultValue = "availableUntil", required = false) String sort,
+                                                           @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION, required = false) Sort.Direction direction) {
         return movieOnStreamingPlatformService
-                .getAll()
-                .stream()
-                .map(movieOnStreamingPlatformOutputDtoConverter::convert)
-                .toList();
+                .getPage(page, size, sort, direction)
+                .map(movieOnStreamingPlatformOutputDtoConverter::convert);
     }
 
     @GetMapping("/{id}")
