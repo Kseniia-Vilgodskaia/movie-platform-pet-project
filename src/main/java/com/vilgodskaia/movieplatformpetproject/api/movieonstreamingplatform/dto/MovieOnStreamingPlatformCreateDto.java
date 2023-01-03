@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
-public class MovieOnStreamingPlatformInputDto {
+public class MovieOnStreamingPlatformCreateDto {
 
     private UUID movieId;
     private UUID streamingPlatformId;
