@@ -15,10 +15,10 @@ import static com.vilgodskaia.movieplatformpetproject.util.ValidationUtil.checkN
 @Component
 @RequiredArgsConstructor
 public class MovieOnStreamingPlatformValidator {
-    private static final String MOVIE_NOT_AVAILABLE_ANYWHERE = "The movie should be available either for buying or in subscription or both";
-    private static final String PRICE_FOR_BUYING_NOT_VALID = "The price for buying should not be lower than 0";
-    private static final String AVAILABLE_UNTIL_NOT_VALID = "The expiration date should not be in the past";
-    private static final String RELATION_NOT_UNIQUE = "The relation between these movie and streaming platform already exists";
+    public static final String MOVIE_NOT_AVAILABLE_ANYWHERE = "The movie should be available either for buying or in subscription or both";
+    public static final String PRICE_FOR_BUYING_NOT_VALID = "The price for buying should not be lower than 0";
+    public static final String AVAILABLE_UNTIL_NOT_VALID = "The expiration date should not be in the past";
+    public static final String RELATION_NOT_UNIQUE = "The relation between these movie and streaming platform already exists";
     private final MovieOnStreamingPlatformRepository movieOnStreamingPlatformRepository;
 
     public void validateForCreating(MovieOnStreamingPlatform movieOnStreamingPlatform) {
@@ -49,11 +49,9 @@ public class MovieOnStreamingPlatformValidator {
         if (!movieOnStreamingPlatform.isAvailableForBuying() && !movieOnStreamingPlatform.isAvailableInSubscription()) {
             validationErrors.add(MOVIE_NOT_AVAILABLE_ANYWHERE);
         }
-        checkNotNull("PriceForBuying ", movieOnStreamingPlatform.getPriceForBuying(), validationErrors);
         if (movieOnStreamingPlatform.getPriceForBuying() != null && movieOnStreamingPlatform.getPriceForBuying() < 0) {
             validationErrors.add(PRICE_FOR_BUYING_NOT_VALID);
         }
-        checkNotNull("AvailableUntil ", movieOnStreamingPlatform.getAvailableUntil(), validationErrors);
         if (movieOnStreamingPlatform.getAvailableUntil() != null && movieOnStreamingPlatform.getAvailableUntil().isBefore(LocalDate.now())) {
             validationErrors.add(AVAILABLE_UNTIL_NOT_VALID);
         }
