@@ -31,7 +31,7 @@ public class MovieOnStreamingPlatformValidator {
                 .findByMovieAndStreamingPlatform(movieOnStreamingPlatform.getMovie(), movieOnStreamingPlatform.getStreamingPlatform()).isPresent()) {
             validationErrors.add(RELATION_NOT_UNIQUE);
         }
-        validateAvailabilityAndPriceAndExpiryDate(movieOnStreamingPlatform, validationErrors);
+        validateMutableFields(movieOnStreamingPlatform, validationErrors);
         if (!validationErrors.isEmpty()) {
             throw new ValidationException(validationErrors);
         }
@@ -39,13 +39,13 @@ public class MovieOnStreamingPlatformValidator {
 
     public void validateForUpdating(MovieOnStreamingPlatform movieOnStreamingPlatform) {
         List<String> validationErrors = new ArrayList<>();
-        validateAvailabilityAndPriceAndExpiryDate(movieOnStreamingPlatform, validationErrors);
+        validateMutableFields(movieOnStreamingPlatform, validationErrors);
         if (!validationErrors.isEmpty()) {
             throw new ValidationException(validationErrors);
         }
     }
 
-    private void validateAvailabilityAndPriceAndExpiryDate(MovieOnStreamingPlatform movieOnStreamingPlatform, List<String> validationErrors) {
+    private void validateMutableFields(MovieOnStreamingPlatform movieOnStreamingPlatform, List<String> validationErrors) {
         if (!movieOnStreamingPlatform.isAvailableForBuying() && !movieOnStreamingPlatform.isAvailableInSubscription()) {
             validationErrors.add(MOVIE_NOT_AVAILABLE_ANYWHERE);
         }
