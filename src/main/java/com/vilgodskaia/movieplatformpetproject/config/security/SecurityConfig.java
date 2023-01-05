@@ -43,6 +43,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
         httpSecurity.authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN", "CLIENT")
                         .anyRequest().authenticated())
                 .httpBasic()
