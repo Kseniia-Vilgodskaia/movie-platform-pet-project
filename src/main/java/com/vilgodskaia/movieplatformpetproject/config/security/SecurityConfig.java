@@ -1,56 +1,68 @@
 package com.vilgodskaia.movieplatformpetproject.config.security;
 
+import com.vilgodskaia.movieplatformpetproject.model.Role;
+import com.vilgodskaia.movieplatformpetproject.model.User;
+import com.vilgodskaia.movieplatformpetproject.repository.UserRestRepository;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
+
     @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        UserDetails user1 = User
-                .withDefaultPasswordEncoder()
-                .username("pesik")
-                .password("pesik")
-                .roles("CLIENT")
-                .build();
-        UserDetails user2 = User
-                .withDefaultPasswordEncoder()
-                .username("homa")
-                .password("homa")
-                .roles("ADMIN")
-                .build();
-        UserDetails user3 = User
-                .withDefaultPasswordEncoder()
-                .username("vredina")
-                .password("vredina")
-                .roles("GUEST")
-                .build();
-        return new InMemoryUserDetailsManager(user1, user2, user3);
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(@Autowired UserRestRepository userRestRepository) {
+        return login -> userRestRepository.findByLoginIgnoreCase(login)
+                .map(this::convertCustomUserToSpringSecurityUser)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found by login: " + login));
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(@Autowired UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(encoder());
+        return authenticationProvider;
     }
 
     @SneakyThrows
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
-        httpSecurity.authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN", "CLIENT")
-                        .anyRequest().authenticated())
-                .httpBasic()
+        httpSecurity.cors().and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated())
+                .httpBasic();
         return httpSecurity.build();
+    }
+
+    private org.springframework.security.core.userdetails.User convertCustomUserToSpringSecurityUser(User user) {
+        String[] roles = user
+                .getRoles()
+                .stream()
+                .map(Role::name)
+                .toArray(String[]::new);
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),
+                AuthorityUtils.createAuthorityList(roles));
     }
 }
