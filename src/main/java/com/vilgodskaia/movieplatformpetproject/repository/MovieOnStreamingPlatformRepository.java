@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface MovieOnStreamingPlatformRepository extends JpaRepository<MovieOnStreamingPlatform, UUID> {
 
     Optional<MovieOnStreamingPlatform> findByMovieAndStreamingPlatform(Movie movie, StreamingPlatform streamingPlatform);
+
+    void deleteByMovieId(UUID movieId);
+
+    void deleteByStreamingPlatformId(UUID streamingPlatformId);
 }

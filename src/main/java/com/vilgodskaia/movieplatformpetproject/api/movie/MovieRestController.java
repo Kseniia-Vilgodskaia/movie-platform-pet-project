@@ -27,7 +27,7 @@ public class MovieRestController {
 
 
     @PostMapping
-    @PreAuthorize(HAS_AUTHORITY_ADMIN_OR_CLIENT)
+    @PreAuthorize(HAS_AUTHORITY_ADMIN)
     public MovieOutputDto create(@RequestBody MovieInputDto movieInputDto) {
         Movie movie = movieService.create(movieInputDto);
         return movieOutputDtoConverter.convert(movie);

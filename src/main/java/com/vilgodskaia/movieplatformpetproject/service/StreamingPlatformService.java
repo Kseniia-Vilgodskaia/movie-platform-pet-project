@@ -3,7 +3,9 @@ package com.vilgodskaia.movieplatformpetproject.service;
 import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformInputDto;
 import com.vilgodskaia.movieplatformpetproject.config.exceptions.StreamingPlatformNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
+import com.vilgodskaia.movieplatformpetproject.repository.MovieOnStreamingPlatformRepository;
 import com.vilgodskaia.movieplatformpetproject.repository.StreamingPlatformRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import java.util.UUID;
 public class StreamingPlatformService {
 
     private final StreamingPlatformRepository streamingPlatformRepository;
+    private final MovieOnStreamingPlatformRepository movieOnStreamingPlatformRepository;
     private final StreamingPlatformValidator streamingPlatformValidator;
 
     /**
@@ -72,12 +75,13 @@ public class StreamingPlatformService {
     }
 
     /**
-     * Delete an existing streaming platform
+     * Delete an existing streaming platform and all relations with movies that it has
      *
      * @param id - ID of the streaming platform
      */
+    @Transactional
     public void delete(UUID id) {
-        StreamingPlatform streamingPlatform = get(id);
-        streamingPlatformRepository.delete(streamingPlatform);
+        movieOnStreamingPlatformRepository.deleteByStreamingPlatformId(id);
+        streamingPlatformRepository.delete(get(id));
     }
 }
