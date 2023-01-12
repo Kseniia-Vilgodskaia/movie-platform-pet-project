@@ -1,5 +1,6 @@
 package com.vilgodskaia.movieplatformpetproject.api.movie;
 
+import com.vilgodskaia.movieplatformpetproject.api.movie.dto.MovieFilter;
 import com.vilgodskaia.movieplatformpetproject.api.movie.dto.MovieInputDto;
 import com.vilgodskaia.movieplatformpetproject.api.movie.dto.MovieOutputDto;
 import com.vilgodskaia.movieplatformpetproject.api.movie.dto.MovieOutputDtoConverter;
@@ -35,11 +36,12 @@ public class MovieRestController {
 
     @GetMapping
     @PreAuthorize(HAS_AUTHORITY_ADMIN_OR_CLIENT)
-    public Page<MovieOutputDto> getPage(@RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
-                                        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size,
-                                        @RequestParam(defaultValue = "year", required = false) String sort,
-                                        @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION, required = false) Sort.Direction direction) {
-        Page<Movie> movies = movieService.getPage(page, size, sort, direction);
+    public Page<MovieOutputDto> filter(MovieFilter filter,
+                                       @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
+                                       @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size,
+                                       @RequestParam(defaultValue = "year", required = false) String sort,
+                                       @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION, required = false) Sort.Direction direction) {
+        Page<Movie> movies = movieService.filter(filter, page, size, sort, direction);
         return movies.map(movieOutputDtoConverter::convert);
     }
 

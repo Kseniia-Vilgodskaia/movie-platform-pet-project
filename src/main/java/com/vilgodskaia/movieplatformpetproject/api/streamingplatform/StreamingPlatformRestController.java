@@ -1,5 +1,6 @@
 package com.vilgodskaia.movieplatformpetproject.api.streamingplatform;
 
+import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformFilter;
 import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformInputDto;
 import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformOutputConverter;
 import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformOutputDto;
@@ -34,11 +35,12 @@ public class StreamingPlatformRestController {
 
     @GetMapping
     @PreAuthorize(HAS_AUTHORITY_ADMIN_OR_CLIENT)
-    public Page<StreamingPlatformOutputDto> getPage(@RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
-                                                    @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size,
-                                                    @RequestParam(defaultValue = "name", required = false) String sort,
-                                                    @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION, required = false) Sort.Direction direction) {
-        return streamingPlatformService.getPage(page, size, sort, direction)
+    public Page<StreamingPlatformOutputDto> filter(StreamingPlatformFilter filter,
+                                                   @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
+                                                   @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) Integer size,
+                                                   @RequestParam(defaultValue = "name", required = false) String sort,
+                                                   @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION, required = false) Sort.Direction direction) {
+        return streamingPlatformService.filter(filter, page, size, sort, direction)
                 .map(streamingPlatformOutputConverter::convert);
     }
 
