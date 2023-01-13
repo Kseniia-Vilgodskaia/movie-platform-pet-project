@@ -51,7 +51,16 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated())
+                        .antMatchers(
+                                "/v2/api-docs",
+                                "/configuration/ui",
+                                "/swagger-resources",
+                                "/configuration/security",
+                                "/swagger-ui.html",
+                                "/webjars/**",
+                                "/swagger-resources/**",
+                                "/api/discovery/oauth-server").permitAll()
+                        .antMatchers("/**").authenticated())
                 .httpBasic();
         return httpSecurity.build();
     }
