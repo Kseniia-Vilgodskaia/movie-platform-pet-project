@@ -1,10 +1,12 @@
 package com.vilgodskaia.movieplatformpetproject.service;
 
+import com.vilgodskaia.movieplatformpetproject.api.movie.dto.MovieFilter;
 import com.vilgodskaia.movieplatformpetproject.api.movie.dto.MovieInputDto;
 import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieOnStreamingPlatformRepository;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieRepository;
+import com.vilgodskaia.movieplatformpetproject.repository.MovieSpecificationsFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,15 +42,19 @@ public class MovieService {
     }
 
     /**
-     * Get a page with movies from DB
-     * @param page - page number
-     * @param size - number of movies on one page
-     * @param sort - field(s) for sorting
+     * Get a page with movies from DB with optional filter
+     *
+     * @param filter    - fields to filter with
+     * @param page      - page number
+     * @param size      - number of movies on one page
+     * @param sort      - field(s) for sorting
      * @param direction - order of displaying
      * @return - a page of movies
      */
-    public Page<Movie> getPage(Integer page, Integer size, String sort, Sort.Direction direction) {
-        return movieRepository.findAll(PageRequest.of(page, size, Sort.by(direction, sort.split(","))));
+    public Page<Movie> filter(MovieFilter filter, Integer page, Integer size, String sort, Sort.Direction direction) {
+        return movieRepository.findAll(
+                MovieSpecificationsFactory.filter(filter),
+                PageRequest.of(page, size, Sort.by(direction, sort.split(","))));
     }
 
     /**

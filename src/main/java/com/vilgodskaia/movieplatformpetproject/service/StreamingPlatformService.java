@@ -1,10 +1,12 @@
 package com.vilgodskaia.movieplatformpetproject.service;
 
+import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformFilter;
 import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformInputDto;
 import com.vilgodskaia.movieplatformpetproject.config.exceptions.StreamingPlatformNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieOnStreamingPlatformRepository;
 import com.vilgodskaia.movieplatformpetproject.repository.StreamingPlatformRepository;
+import com.vilgodskaia.movieplatformpetproject.repository.StreamingPlatformSpecificationsFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,16 +38,18 @@ public class StreamingPlatformService {
     }
 
     /**
-     * Get a page with streaming platforms from DB
+     * Get a page with streaming platforms from DB with optional filter
      *
+     * @param filter    - fields to filter with
      * @param page      - page number
      * @param size      - number of streaming platforms on one page
      * @param sort      - field(s) for sorting
      * @param direction - order of displaying
      * @return - a page of streaming platforms
      */
-    public Page<StreamingPlatform> getPage(Integer page, Integer size, String sort, Sort.Direction direction) {
-        return streamingPlatformRepository.findAll(PageRequest.of(page, size, direction, sort.split(",")));
+    public Page<StreamingPlatform> filter(StreamingPlatformFilter filter, Integer page, Integer size, String sort, Sort.Direction direction) {
+        return streamingPlatformRepository.findAll(StreamingPlatformSpecificationsFactory.filter(filter),
+                PageRequest.of(page, size, direction, sort.split(",")));
     }
 
     /**
