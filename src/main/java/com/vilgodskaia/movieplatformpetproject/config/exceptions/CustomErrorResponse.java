@@ -1,7 +1,14 @@
 package com.vilgodskaia.movieplatformpetproject.config.exceptions;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
-public record CustomErrorResponse(List<String> errorMessage) {
-
+@Getter
+@Setter
+@RequiredArgsConstructor
+public class CustomErrorResponse {
+    private final List<String> errorMessage;
 }

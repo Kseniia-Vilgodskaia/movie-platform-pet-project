@@ -1,12 +1,12 @@
 package com.vilgodskaia.movieplatformpetproject.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 

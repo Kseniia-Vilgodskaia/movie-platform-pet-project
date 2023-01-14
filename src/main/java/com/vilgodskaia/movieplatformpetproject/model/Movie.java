@@ -1,12 +1,13 @@
 package com.vilgodskaia.movieplatformpetproject.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@FieldNameConstants
 public class Movie {
 
     /**
