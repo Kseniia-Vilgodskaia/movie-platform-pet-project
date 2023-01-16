@@ -7,6 +7,12 @@ can watch them.
 
 Use **sql_scripts** folder to create a test database schema.
 
+### Credentials
+
+`ADMIN: login/password - TheBestBoss/TheBestBoss`
+
+`CLIENT: login/password - AssistantRegionalManager/AssistantRegionalManager`
+
 ### Test Data
 
 Test data used in the project is random and not accurate. It has been submitted only to verify the business logic.
