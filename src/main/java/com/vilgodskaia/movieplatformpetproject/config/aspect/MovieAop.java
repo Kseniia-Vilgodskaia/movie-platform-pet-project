@@ -3,10 +3,7 @@ package com.vilgodskaia.movieplatformpetproject.config.aspect;
 import com.vilgodskaia.movieplatformpetproject.util.DataType;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -16,22 +13,46 @@ import java.util.Arrays;
 @Log4j2
 public class MovieAop {
 
-    private final String apiPointCut = "execution(com.vilgodskaia.movieplatformpetproject.api.movie.*.*(..))";
+    private final String apiPointCutMovieController = "execution(* com.vilgodskaia.movieplatformpetproject.api.movie.MovieRestController.**(..))";
+    private final String apiPointCutStreamingController = "execution(* com.vilgodskaia.movieplatformpetproject.api.streamingplatform.StreamingPlatformRestController.**(..))";
+    private final String apiPointCutMovieOnStreamingController = "execution(* com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.MovieOnStreamingPlatformRestController.**(..))";
 
-    @Pointcut(apiPointCut)
-    public void logController() {
+    private final String exceptionPointCut = "execution(* com.vilgodskaia.movieplatformpetproject.*.*.*(..))";
+
+    @Pointcut(apiPointCutMovieController)
+    public void logMovieController() {
     }
 
-    @Before("logController()")
+    @Pointcut(apiPointCutStreamingController)
+    public void logStreamingController() {
+    }
+
+    @Pointcut(apiPointCutMovieOnStreamingController)
+    public void logMovieOnStreamingController() {
+    }
+
+    @Pointcut("logMovieController() || logStreamingController() || logMovieOnStreamingController()")
+    public void logAnyController() {
+    }
+
+    @Before("logAnyController()")
     public void logRequest(JoinPoint joinPoint) {
-        log.info(joinPoint.getSignature().getName());
+        log.info("METHOD: " + joinPoint.getSignature().getName());
         log.info(createJoinPointForLogs(joinPoint, DataType.REQUEST));
     }
 
-    @AfterReturning("logController()")
+    @AfterReturning("logAnyController()")
     public void logResponse(JoinPoint joinPoint) {
-        log.info(joinPoint.getSignature().getName());
+        log.info("METHOD: " + joinPoint.getSignature().getName());
         log.info(createJoinPointForLogs(joinPoint, DataType.RESPONSE));
+    }
+
+    @AfterThrowing(pointcut = exceptionPointCut, throwing = "exception")
+    public void logExceptions(JoinPoint joinPoint, Throwable exception) {
+        log.info("====================We have an exception here====================");
+        log.info("METHOD: " + joinPoint.getSignature().getName());
+        log.info(exception.getMessage());
+        log.info("=================================================================");
     }
 
     private String createJoinPointForLogs(JoinPoint joinPoint, DataType dataType) {
@@ -41,8 +62,8 @@ public class MovieAop {
         }
         StringBuilder values = new StringBuilder();
         values.append(dataType.equals(DataType.REQUEST)
-                ? "\\r\\n========== The request values =========="
-                : "\\r\\n========== The response values ==========");
+                ? "========== The request values =========="
+                : "========== The response values ==========");
         Arrays.stream(args).forEach(arg -> {
             values.append("\r\n");
             values.append(arg.toString());
