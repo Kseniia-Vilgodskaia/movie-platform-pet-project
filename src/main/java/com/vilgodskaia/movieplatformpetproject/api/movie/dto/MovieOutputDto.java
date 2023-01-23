@@ -4,6 +4,7 @@ import com.vilgodskaia.movieplatformpetproject.model.MovieGenre;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.UUID;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class MovieOutputDto {
 
     /**

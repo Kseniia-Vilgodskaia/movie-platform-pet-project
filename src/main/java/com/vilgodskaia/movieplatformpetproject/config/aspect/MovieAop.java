@@ -1,9 +1,11 @@
 package com.vilgodskaia.movieplatformpetproject.config.aspect;
 
-import com.vilgodskaia.movieplatformpetproject.util.DataType;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -12,39 +14,32 @@ import java.util.Arrays;
 @Aspect
 @Log4j2
 public class MovieAop {
-
-    private final String apiPointCutMovieController = "execution(* com.vilgodskaia.movieplatformpetproject.api.movie.MovieRestController.**(..))";
-    private final String apiPointCutStreamingController = "execution(* com.vilgodskaia.movieplatformpetproject.api.streamingplatform.StreamingPlatformRestController.**(..))";
-    private final String apiPointCutMovieOnStreamingController = "execution(* com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.MovieOnStreamingPlatformRestController.**(..))";
-
     private final String exceptionPointCut = "execution(* com.vilgodskaia.movieplatformpetproject.*.*.*(..))";
+    private final String restControllerPointCut = "within(@org.springframework.web.bind.annotation.RestController *)";
 
-    @Pointcut(apiPointCutMovieController)
-    public void logMovieController() {
-    }
-
-    @Pointcut(apiPointCutStreamingController)
-    public void logStreamingController() {
-    }
-
-    @Pointcut(apiPointCutMovieOnStreamingController)
-    public void logMovieOnStreamingController() {
-    }
-
-    @Pointcut("logMovieController() || logStreamingController() || logMovieOnStreamingController()")
-    public void logAnyController() {
-    }
-
-    @Before("logAnyController()")
+    @Before(restControllerPointCut)
     public void logRequest(JoinPoint joinPoint) {
         log.info("METHOD: " + joinPoint.getSignature().getName());
-        log.info(createJoinPointForLogs(joinPoint, DataType.REQUEST));
+        Object[] args = joinPoint.getArgs();
+        if (args.length == 0) {
+            log.info("Method does not have parameters.");
+        } else {
+            StringBuilder values = new StringBuilder();
+            values.append("========== The request values ==========");
+            Arrays.stream(args).forEach(arg -> {
+                values.append("\r\n");
+                values.append(arg.toString());
+            });
+            values.append("\r\n==================================================");
+            log.info(values.toString());
+        }
     }
 
-    @AfterReturning("logAnyController()")
-    public void logResponse(JoinPoint joinPoint) {
+    @AfterReturning(value = restControllerPointCut, returning = "returnValue")
+    public void logResponse(JoinPoint joinPoint, Object returnValue) {
         log.info("METHOD: " + joinPoint.getSignature().getName());
-        log.info(createJoinPointForLogs(joinPoint, DataType.RESPONSE));
+        log.info("========== The response values ==========");
+        log.info(returnValue.toString());
     }
 
     @AfterThrowing(pointcut = exceptionPointCut, throwing = "exception")
@@ -53,22 +48,5 @@ public class MovieAop {
         log.info("METHOD: " + joinPoint.getSignature().getName());
         log.info(exception.getMessage());
         log.info("=================================================================");
-    }
-
-    private String createJoinPointForLogs(JoinPoint joinPoint, DataType dataType) {
-        Object[] args = joinPoint.getArgs();
-        if (args.length == 0) {
-            return joinPoint.getSignature().getName().concat(" method does not have parameters.");
-        }
-        StringBuilder values = new StringBuilder();
-        values.append(dataType.equals(DataType.REQUEST)
-                ? "========== The request values =========="
-                : "========== The response values ==========");
-        Arrays.stream(args).forEach(arg -> {
-            values.append("\r\n");
-            values.append(arg.toString());
-        });
-        values.append("\r\n==================================================");
-        return values.toString();
     }
 }

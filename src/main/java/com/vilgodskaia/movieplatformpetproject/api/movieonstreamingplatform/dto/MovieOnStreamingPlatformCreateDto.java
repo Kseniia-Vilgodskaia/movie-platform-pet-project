@@ -1,11 +1,13 @@
 package com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
+@ToString
 public class MovieOnStreamingPlatformCreateDto {
 
     private UUID movieId;
