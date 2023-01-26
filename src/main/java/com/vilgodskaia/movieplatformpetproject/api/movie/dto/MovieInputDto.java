@@ -2,8 +2,10 @@ package com.vilgodskaia.movieplatformpetproject.api.movie.dto;
 
 import com.vilgodskaia.movieplatformpetproject.model.MovieGenre;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class MovieInputDto {
 
     /**
