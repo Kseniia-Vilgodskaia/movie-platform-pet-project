@@ -28,25 +28,25 @@ public class MovieValidator {
         List<String> validationErrors = new ArrayList<>();
 
         //Validate Title
-        checkNotEmptyAndNotNull("Title", movie.getTitle(), validationErrors);
+        validationErrors.addAll(checkNotEmptyAndNotNull("Title", movie.getTitle()));
 
         //Validate Year
-        checkNotNull("Year", movie.getYear(), validationErrors);
+        validationErrors.addAll(checkNotNull("Year", movie.getYear()));
         if (movie.getYear() != null && movie.getYear() < 1895) {
             validationErrors.add(YEAR_NOT_VALID);
         }
 
         //Validate Genre
-        checkNotNull("Genre", movie.getGenre(), validationErrors);
+        validationErrors.addAll(checkNotNull("Genre", movie.getGenre()));
 
         //Validate Duration
-        checkNotNull("Duration", movie.getDuration(), validationErrors);
+        validationErrors.addAll(checkNotNull("Duration", movie.getDuration()));
         if (movie.getDuration() != null && movie.getDuration() <= 0) {
             validationErrors.add(DURATION_NOT_VALID);
         }
 
         //Validate Director
-        checkNotEmptyAndNotNull("Director", movie.getDirector(), validationErrors);
+        validationErrors.addAll(checkNotEmptyAndNotNull("Director", movie.getDirector()));
 
         //Check if this movie already exists in DB
         if (movie.getTitle() != null && movie.getYear() != null && movie.getDirector() != null) {

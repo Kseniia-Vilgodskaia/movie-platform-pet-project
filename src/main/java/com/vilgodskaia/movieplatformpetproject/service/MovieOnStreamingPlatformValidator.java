@@ -23,8 +23,8 @@ public class MovieOnStreamingPlatformValidator {
 
     public void validateForCreating(MovieOnStreamingPlatform movieOnStreamingPlatform) {
         List<String> validationErrors = new ArrayList<>();
-        checkNotNull("Movie ", movieOnStreamingPlatform.getMovie(), validationErrors);
-        checkNotNull("StreamingPlatform ", movieOnStreamingPlatform.getStreamingPlatform(), validationErrors);
+        validationErrors.addAll(checkNotNull("Movie ", movieOnStreamingPlatform.getMovie()));
+        validationErrors.addAll(checkNotNull("StreamingPlatform ", movieOnStreamingPlatform.getStreamingPlatform()));
         if (movieOnStreamingPlatform.getMovie() != null
                 && movieOnStreamingPlatform.getStreamingPlatform() != null
                 && movieOnStreamingPlatformRepository

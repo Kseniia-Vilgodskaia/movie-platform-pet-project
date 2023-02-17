@@ -19,19 +19,18 @@ public class StreamingPlatformValidator {
     private final StreamingPlatformRepository streamingPlatformRepository;
 
     public void validate(StreamingPlatform streamingPlatform) {
-        List<String> errorMessages = new ArrayList<>();
         String streamingPlatformName = streamingPlatform.getName();
-        checkNotEmptyAndNotNull("Name", streamingPlatformName, errorMessages);
+        List<String> validationErrors = new ArrayList<>(checkNotEmptyAndNotNull("Name", streamingPlatformName));
 
         if (streamingPlatformName != null) {
             Optional<StreamingPlatform> existingPlatform = streamingPlatformRepository.findByName(streamingPlatformName);
             if (existingPlatform.isPresent() && !existingPlatform.get().getId().equals(streamingPlatform.getId())) {
-                errorMessages.add(STREAMING_PLATFORM_NOT_UNIQUE);
+                validationErrors.add(STREAMING_PLATFORM_NOT_UNIQUE);
             }
         }
 
-        if (!errorMessages.isEmpty()) {
-            throw new ValidationException(errorMessages);
+        if (!validationErrors.isEmpty()) {
+            throw new ValidationException(validationErrors);
         }
     }
 }
