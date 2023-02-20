@@ -2,7 +2,6 @@ package com.vilgodskaia.movieplatformpetproject.service;
 
 import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformFilter;
 import com.vilgodskaia.movieplatformpetproject.api.streamingplatform.dto.StreamingPlatformInputDto;
-import com.vilgodskaia.movieplatformpetproject.config.exceptions.StreamingPlatformNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieOnStreamingPlatformRepository;
 import com.vilgodskaia.movieplatformpetproject.repository.StreamingPlatformRepository;
@@ -59,9 +58,7 @@ public class StreamingPlatformService {
      * @return - found streaming platform
      */
     public StreamingPlatform get(UUID id) {
-        return streamingPlatformRepository
-                .findById(id)
-                .orElseThrow(() -> new StreamingPlatformNotFoundException(id));
+        return streamingPlatformRepository.getOrThrow(id);
     }
 
     /**

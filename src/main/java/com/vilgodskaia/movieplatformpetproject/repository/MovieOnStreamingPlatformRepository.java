@@ -1,5 +1,6 @@
 package com.vilgodskaia.movieplatformpetproject.repository;
 
+import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieOnStreamingPlatformNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.model.MovieOnStreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
@@ -15,4 +16,8 @@ public interface MovieOnStreamingPlatformRepository extends JpaRepository<MovieO
     void deleteByMovieId(UUID movieId);
 
     void deleteByStreamingPlatformId(UUID streamingPlatformId);
+
+    default MovieOnStreamingPlatform getOrThrow(UUID id) {
+        return findById(id).orElseThrow(() -> new MovieOnStreamingPlatformNotFoundException(id));
+    }
 }

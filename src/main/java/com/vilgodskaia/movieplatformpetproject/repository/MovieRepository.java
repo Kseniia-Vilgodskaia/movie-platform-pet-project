@@ -1,5 +1,6 @@
 package com.vilgodskaia.movieplatformpetproject.repository;
 
+import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -18,4 +19,8 @@ public interface MovieRepository extends JpaRepository<Movie, UUID>, JpaSpecific
      * @return - an existing movie from DB
      */
     Optional<Movie> findByTitleAndYearAndDirector(String title, Integer year, String director);
+
+    default Movie getOrThrow(UUID id) {
+        return findById(id).orElseThrow(() -> new MovieNotFoundException(id));
+    }
 }
