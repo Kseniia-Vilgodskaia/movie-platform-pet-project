@@ -11,18 +11,7 @@ import java.util.List;
 public class MoviePlatformExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<CustomErrorResponse> handleException(MovieNotFoundException exception) {
-        return new ResponseEntity<>(new CustomErrorResponse(List.of(exception.getMessage())),
-                HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<CustomErrorResponse> handleException(StreamingPlatformNotFoundException exception) {
-        return new ResponseEntity<>(new CustomErrorResponse(List.of(exception.getMessage())), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<CustomErrorResponse> handleException(MovieOnStreamingPlatformNotFoundException exception) {
+    public ResponseEntity<CustomErrorResponse> handleException(EntityNotFoundException exception) {
         return new ResponseEntity<>(new CustomErrorResponse(List.of(exception.getMessage())),
                 HttpStatus.NOT_FOUND);
     }
