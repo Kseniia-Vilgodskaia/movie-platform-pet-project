@@ -2,11 +2,12 @@ package com.vilgodskaia.movieplatformpetproject.service;
 
 import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformCreateDto;
 import com.vilgodskaia.movieplatformpetproject.api.movieonstreamingplatform.dto.MovieOnStreamingPlatformUpdateDto;
-import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieOnStreamingPlatformNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.model.MovieOnStreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.model.StreamingPlatform;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieOnStreamingPlatformRepository;
+import com.vilgodskaia.movieplatformpetproject.repository.MovieRepository;
+import com.vilgodskaia.movieplatformpetproject.repository.StreamingPlatformRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,8 +21,8 @@ import java.util.UUID;
 public class MovieOnStreamingPlatformService {
     private final MovieOnStreamingPlatformRepository movieOnStreamingPlatformRepository;
     private final MovieOnStreamingPlatformValidator movieOnStreamingPlatformValidator;
-    private final MovieService movieService;
-    private final StreamingPlatformService streamingPlatformService;
+    private final MovieRepository movieRepository;
+    private final StreamingPlatformRepository streamingPlatformRepository;
 
     /**
      * Create a new relation between a movie and a streaming platform
@@ -30,8 +31,8 @@ public class MovieOnStreamingPlatformService {
      * @return - MovieOnStreamingPlatform of the created relation
      */
     public MovieOnStreamingPlatform create(MovieOnStreamingPlatformCreateDto movieOnStreamingPlatformCreateDto) {
-        Movie movie = movieService.get(movieOnStreamingPlatformCreateDto.getMovieId());
-        StreamingPlatform streamingPlatform = streamingPlatformService.get(movieOnStreamingPlatformCreateDto.getStreamingPlatformId());
+        Movie movie = movieRepository.getOrThrow(movieOnStreamingPlatformCreateDto.getMovieId());
+        StreamingPlatform streamingPlatform = streamingPlatformRepository.getOrThrow(movieOnStreamingPlatformCreateDto.getStreamingPlatformId());
         MovieOnStreamingPlatform movieOnStreamingPlatform = new MovieOnStreamingPlatform()
                 .setMovie(movie)
                 .setStreamingPlatform(streamingPlatform)
@@ -59,7 +60,7 @@ public class MovieOnStreamingPlatformService {
      * @return - found relation
      */
     public MovieOnStreamingPlatform get(UUID id) {
-        return movieOnStreamingPlatformRepository.findById(id).orElseThrow(() -> new MovieOnStreamingPlatformNotFoundException(id));
+        return movieOnStreamingPlatformRepository.getOrThrow(id);
     }
 
     /**

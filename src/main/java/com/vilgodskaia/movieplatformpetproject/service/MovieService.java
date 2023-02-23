@@ -2,7 +2,6 @@ package com.vilgodskaia.movieplatformpetproject.service;
 
 import com.vilgodskaia.movieplatformpetproject.api.movie.dto.MovieFilter;
 import com.vilgodskaia.movieplatformpetproject.api.movie.dto.MovieInputDto;
-import com.vilgodskaia.movieplatformpetproject.config.exceptions.MovieNotFoundException;
 import com.vilgodskaia.movieplatformpetproject.model.Movie;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieOnStreamingPlatformRepository;
 import com.vilgodskaia.movieplatformpetproject.repository.MovieRepository;
@@ -64,7 +63,7 @@ public class MovieService {
      * @return - MovieOutputDto of the found movie
      */
     public Movie get(UUID id) {
-        return movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(id));
+        return movieRepository.getOrThrow(id);
     }
 
     /**
